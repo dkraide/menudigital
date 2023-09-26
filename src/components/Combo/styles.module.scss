@@ -1,0 +1,32 @@
+.container{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 5px;
+    border-bottom: solid 3px var(--blue);
+    border-radius: 0px 0px 0px 10px;
+}
+.containerInfo{
+    flex-direction: column;
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+    padding-left: 5px;
+}
+.pic{
+    width: 30%;
+    max-width: 120px;
+    border-radius: 8px 8px 0px 8px;
+    border: solid 3px var(--blue);
+}
+.lblValue{
+    text-align: end;
+    padding-right: 5px;
+    border-radius: 0px 0px 0px 0px;
+}
+.lblValue, .lblTitle, .lblDesc{
+    color: var(--blue);
+}
+.lblTitle, .lblValue{
+    font-weight: bold;
+}

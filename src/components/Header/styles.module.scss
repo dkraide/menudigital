@@ -1,0 +1,79 @@
+.container{
+    width: 930px;
+    height: auto;
+    max-width: 95%;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    border-radius: 4px;
+    border: 1pt solid rgba(0, 0, 0, 0.2);
+    background-color: var(--blue);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    h3{
+    color: var(--white);
+
+    }
+
+    img{
+        cursor: pointer;
+        height: 150px;
+        width: 100%;
+        object-fit: cover;
+        object-position: center;
+        box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 12px;
+        line-height: 1.2rem;
+    }
+}
+.containerEmpresa{
+    width: 100%;
+   
+    p{
+        text-align: center;
+        a{
+            font-family: 'Roboto', sans-serif;
+            font-weight: 100;
+            color: var(--white);
+        }
+    }
+   
+}
+.containerBoxes{
+    flex-direction: row;
+    display: flex;
+    padding: 5px 10px;
+    justify-content: space-around;
+}
+.containerBox{
+    cursor: pointer;
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    max-width: 100px;
+    &:hover{
+        p{
+            text-decoration:underline;
+        }
+    }
+    P{
+        color: white;
+        margin-top: 5px;
+        text-align: center;
+    }
+}
+.horarios{
+    height: 275px;
+    width: 100%;
+    max-width: 450px;
+}
+.horarioField{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: 8px;
+    p{
+        width: 33%;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+    }
+}
