@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-   baseURL: "https://krdapi.emartim.com.br/api"
+   baseURL: "https://backendpdv.azurewebsites.net/api"
 });
 
 export {api};
