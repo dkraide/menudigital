@@ -37,6 +37,13 @@ export default function Header({emp} : headerProps){
                 setLoading(false);
         }).catch((r) => {
         });
+        api
+        .get(`/MenuDigital/Configuracao?id=${empr}&withHorarios=true`)
+        .then((r) => {
+                setConfig(r.data);
+                setLoading(false);
+        }).catch((r) => {
+        });
     }
     function getHorarios(){
            setHiddenHorario(!hiddenHorario);
@@ -44,7 +51,6 @@ export default function Header({emp} : headerProps){
            if(!config){
              api.get(`/MenuDigital/Configuracao?id=${empresa?.id}&withHorarios=true`)
              .then((r) => {
-                 console.log(r.data);
                  setConfig(r.data);
              })
              .catch((err) => { 
@@ -61,7 +67,7 @@ export default function Header({emp} : headerProps){
     }
     return(
         <div className={styles.container}>
-            <img onClick={() => {window.location.href= '/'}} src={`https://krd.emartim.com.br/MenuDigital/${empresa?.id}folder.jpg`}></img>
+            <img onClick={() => {window.location.href= '/'}} src={config?.imagem?.localOnline}></img>
             <div className={styles.containerEmpresa}>
                     <h3>{empresa?.nomeFantasia}</h3>
                     <p><a target='_blank' href={`https://www.google.com/maps/search/?api=1&query=${empresa?.endereco}, ${empresa?.nro} - ${empresa?.bairro} - ${empresa?.cidade} / ${empresa?.uf}`}>{empresa?.endereco}, {empresa?.nro} {empresa?.complemento} - {empresa?.bairro} - {empresa?.cidade}</a></p>
