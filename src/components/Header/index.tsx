@@ -67,7 +67,7 @@ export default function Header({emp} : headerProps){
     }
     return(
         <div className={styles.container}>
-            <img onClick={() => {window.location.href= '/'}} src={config?.imagem?.localOnline}></img>
+            <img onClick={() => {window.location.href= '/'}} src={config?.localPath}></img>
             <div className={styles.containerEmpresa}>
                     <h3>{empresa?.nomeFantasia}</h3>
                     <p><a target='_blank' href={`https://www.google.com/maps/search/?api=1&query=${empresa?.endereco}, ${empresa?.nro} - ${empresa?.bairro} - ${empresa?.cidade} / ${empresa?.uf}`}>{empresa?.endereco}, {empresa?.nro} {empresa?.complemento} - {empresa?.bairro} - {empresa?.cidade}</a></p>

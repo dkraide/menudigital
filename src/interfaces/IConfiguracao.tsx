@@ -1,6 +1,6 @@
 export default interface IConfiguracao{
   corFundo: string;
-  imagem: IProdutoImagem;
+  localPath: string;
   horarios: Horario[];
 }
 export interface Horario{
