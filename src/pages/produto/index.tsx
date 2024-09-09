@@ -10,8 +10,9 @@ import _ from 'lodash';
 import BoxAdicional from '@/components/Produto/BoxAdicional';
 import CustomCheckbox from '@/components/CustomCheckbox';
 import { toast } from 'react-toastify';
+import DividerLine from '@/components/DividerLine';
 
-export default function Produto(){
+export default function Produto() {
     const [produto, setProduto] = useState({} as IClasseProduto);
     const [empresaId, setEmpresa] = useState('');
     const [obs, setObs] = useState('');
@@ -21,67 +22,66 @@ export default function Produto(){
         const params = new URLSearchParams(window.location.search);
         setEmpresa(item);
         api.get(`/MenuDigital/produto?empresa=${item}&produtoId=${params.get('produtoId')}`)
-        .then((r) => {
-            setProduto(r.data);
-        }).catch((err) => {
-            console.log(err);
-        });
-    },[]);
+            .then((r) => {
+                setProduto(r.data);
+            }).catch((err) => {
+                console.log(err);
+            });
+    }, []);
 
 
-    function addProd(operator: string){
-           if(operator === '-'){
-               if(quantidade <= 1){
+    function addProd(operator: string) {
+        if (operator === '-') {
+            if (quantidade <= 1) {
                 return;
-               }
-               setQuantidade(quantidade -1);
-           }else{
-              setQuantidade(quantidade +1);
-           }
+            }
+            setQuantidade(quantidade - 1);
+        } else {
+            setQuantidade(quantidade + 1);
+        }
     }
-    function addAdicional(type: string,indexGroup: number, indexItem: number){
+    function addAdicional(type: string, indexGroup: number, indexItem: number) {
 
-            var total = _.sumBy(produto.grupos[indexGroup].itens, (e) => e.quantidade);
-            var qntd = produto.grupos[indexGroup].itens[indexItem].quantidade;
-            if(type === '-' && qntd === 0){
-                return;
-            }
-            if(type === '+' && total >= produto.grupos[indexGroup].max){
-                return;
-            }
-            if(type === '-'){
-                qntd -= 1;
-            }else{
-                qntd += 1;
-            }
-            produto.grupos[indexGroup].itens[indexItem].quantidade = qntd;
-            setProduto({...produto})
+        var total = _.sumBy(produto.grupos[indexGroup].itens, (e) => e.quantidade);
+        var qntd = produto.grupos[indexGroup].itens[indexItem].quantidade;
+        if (type === '-' && qntd === 0) {
+            return;
+        }
+        if (type === '+' && total >= produto.grupos[indexGroup].max) {
+            return;
+        }
+        if (type === '-') {
+            qntd -= 1;
+        } else {
+            qntd += 1;
+        }
+        produto.grupos[indexGroup].itens[indexItem].quantidade = qntd;
+        setProduto({ ...produto })
 
     }
-    function validateAdicionais(): boolean{
-        if(produto.grupos === undefined ||
+    function validateAdicionais(): boolean {
+        if (produto.grupos === undefined ||
             produto.grupos === null ||
-            produto.grupos.length === 0){
-                return true;
-            }
+            produto.grupos.length === 0) {
+            return true;
+        }
         var can = true;
         produto.grupos.map((grupo) => {
-            if(grupo.min > 0){
+            if (grupo.min > 0) {
                 var total = _.sumBy(grupo.itens, (i) => i.quantidade);
-                if(total < grupo.min)
-                  {
+                if (total < grupo.min) {
                     toast.error(`Selecione ao menos ${grupo.min} de ${grupo.descricao}`);
                     can = false;
-                  }
+                }
             }
         });
 
         return can;
     }
-    function addCarrinho(){
+    function addCarrinho() {
 
         var res = validateAdicionais();
-        if(!res){
+        if (!res) {
             return;
         }
         var order = JSON.parse(sessionStorage.getItem('order') || '{}') as IOrder;
@@ -89,127 +89,126 @@ export default function Produto(){
         prod.adicionais = [] as IOrderProdutoAdicional[];
         prod.descricao = produto.descricao;
         prod.observacao = obs;
-        if(produto.opcionais !== undefined &&
+        if (produto.opcionais !== undefined &&
             produto.opcionais !== null &&
-            produto.opcionais.length > 0 ){
-                produto.opcionais.map((opc) => {
-                    if(opc.selected === false){
-                        prod.observacao += `\nSEM ${opc.descricao}`;
-                    }
-                })
-            }
-        if(produto.grupos !== undefined &&
-           produto.grupos !== null &&
-           produto.grupos.length > 0){
-             produto.grupos.map(grupo => {
-                   grupo.itens.map(item => {
-                       if(item.quantidade > 0){
-                          var adc = {
+            produto.opcionais.length > 0) {
+            produto.opcionais.map((opc) => {
+                if (opc.selected === false) {
+                    prod.observacao += `\nSEM ${opc.descricao}`;
+                }
+            })
+        }
+        if (produto.grupos !== undefined &&
+            produto.grupos !== null &&
+            produto.grupos.length > 0) {
+            produto.grupos.map(grupo => {
+                grupo.itens.map(item => {
+                    if (item.quantidade > 0) {
+                        var adc = {
                             quantidade: item.quantidade,
                             valorTotal: item.valor * item.quantidade,
                             valorUn: item.valor,
                             nome: item.nome,
                             imagem: item.imagem,
                             id: item.id
-                          } as IOrderProdutoAdicional;
-                          prod.adicionais.push(adc);
-                       }
-                   });
-             });
-           }
+                        } as IOrderProdutoAdicional;
+                        prod.adicionais.push(adc);
+                    }
+                });
+            });
+        }
         prod.id = produto.idProduto;
         prod.imagem = produto.imagem;
         prod.nome = produto.nome;
         prod.quantidade = quantidade;
         prod.valorTotal = getTotal();
         prod.valorUn = getTotalUnitario();
-        if(!order.produtos){
+        if (!order.produtos) {
             order.produtos = [];
         }
         order.produtos.push(prod);
         sessionStorage.setItem('order', JSON.stringify(order));
-        window.location.href= `/order`;
+        window.location.href = `/order`;
     }
-    function getTotal(): number{
-      var total = getTotalUnitario();
-      return total * quantidade;
+    function getTotal(): number {
+        var total = getTotalUnitario();
+        return total * quantidade;
     }
-    function setOpcional(index: number):void{
-        if(produto.opcionais[index].selected === undefined){
+    function setOpcional(index: number): void {
+        if (produto.opcionais[index].selected === undefined) {
             produto.opcionais[index].selected = false;
-        }else{
+        } else {
             produto.opcionais[index].selected = !produto.opcionais[index].selected;
         }
-        setProduto({...produto});
+        setProduto({ ...produto });
     }
-    function getTotalUnitario(): number{
+    function getTotalUnitario(): number {
         var total = produto.valor || 0;
         var adc = 0;
         produto.grupos?.map((g) => {
-          g.itens.map((item) => {
-              adc += (item.quantidade || 0) * item.valor;
-          })
+            g.itens.map((item) => {
+                adc += (item.quantidade || 0) * item.valor;
+            })
         });
         total += adc;
         return total;
     };
-    return(
+    return (
         <div className={styles.containerCenter}>
             <Header />
             <div className={styles.containerPromo}>
-                <p className={styles.title}>Produto</p>
                 <div className={styles.divImage}>
                     <img className={styles.img} src={produto.imagem} alt='imagem do prdouto' />
                 </div>
-                <p className={styles.descricao}>{produto.nome}
-                <br/>
-                R$ {produto.valor?.toFixed(2)}
-                </p>
-                <h5>{produto.descricao}</h5>
+                <DividerLine/>
+                <p className={styles.nomeProduto} >{produto.nome}</p>
+                <p className={styles.descricao}>{produto.descricao}</p>
+                <p className={styles.preco}>A partir de R$ {produto?.valor?.toFixed(2)}</p>
             </div>
+            <DividerLine/>
             <div hidden={produto.opcionais === undefined || produto.opcionais.length == 0} className={styles.containerOpcionais}>
                 <div className={styles.coHeader}>
-                       Desmarque caso nao queira algum dos ingredientes =)
+                    Desmarque caso nao queira algum dos ingredientes =)
                 </div>
                 <div className={styles.coContent}>
                     {produto.opcionais?.map((item, index) => {
-                        return <CustomCheckbox key={index} desc={item.descricao} selected={item.selected === undefined ? true : item.selected} onChange={() => {setOpcional(index)}}/>
+                        return <CustomCheckbox key={index} desc={item.descricao} selected={item.selected === undefined ? true : item.selected} onChange={() => { setOpcional(index) }} />
                     })}
                 </div>
             </div>
-           
+
             {produto.grupos !== undefined && produto.grupos.length > 0 ?
-             (produto.grupos.map((g, index) => {
-                return(<BoxAdicional key={g.id} grupo={g} index={index} changeQuantity={addAdicional}/>)
-             })) : 
-             (<></>)}
-              <div className={styles.containerOpcionais}>
+                (produto.grupos.map((g, index) => {
+                    return (<BoxAdicional key={g.id} grupo={g} index={index} changeQuantity={addAdicional} />)
+                })) :
+                (<></>)}
+            <div className={styles.containerOpcionais}>
                 <div className={styles.coHeader}>
-                       Observacoes para  o estabelecimento
+                   Observações para  o estabelecimento
                 </div>
                 <div>
-                    <textarea placeholder='Clique aqui para inserir observacao' className={styles.obs} value={obs} onChange={(e) => setObs(e.target.value)}></textarea>
+                    <textarea placeholder='Clique aqui para inserir observação' className={styles.obs} value={obs} onChange={(e) => setObs(e.target.value)}></textarea>
                 </div>
             </div>
             <div className={styles.containerButtons}>
-               <FontAwesomeIcon onClick={() => {addProd('-')}} className={styles.icon} icon={faMinus}/>
-               <input readOnly value={quantidade}/>
-               <FontAwesomeIcon onClick={() => {addProd('+')}} className={styles.icon} icon={faPlus}/>
+                <FontAwesomeIcon onClick={() => { addProd('-') }} className={styles.icon} icon={faMinus} />
+                <input readOnly value={quantidade} />
+                <FontAwesomeIcon onClick={() => { addProd('+') }} className={styles.icon} icon={faPlus} size={'sm'}/>
             </div>
             <div className={styles.containerCarrinho}>
-            <div>
-                <label className={styles.carrinhoDesc}>Qntd:</label>
-                <label className={styles.carrinhoVal}>{quantidade}</label>
+                <div>
+                    <label className={styles.carrinhoDesc}>Qntd:</label>
+                    <label className={styles.carrinhoVal}>{quantidade}</label>
                 </div>
                 <div>
-                <label className={styles.carrinhoDesc}>Vlr Un.</label>
-                <label className={styles.carrinhoVal}>R${getTotalUnitario().toFixed(2)}</label>
+                    <label className={styles.carrinhoDesc}>Vlr Un.</label>
+                    <label className={styles.carrinhoVal}>R${getTotalUnitario().toFixed(2)}</label>
                 </div>
                 <div>
-                <label className={styles.carrinhoDesc}>Total:</label>
-                <label className={styles.carrinhoVal}>R${getTotal().toFixed(2)}</label>
+                    <label className={styles.carrinhoDesc}>Total:</label>
+                    <label className={styles.carrinhoVal}>R${getTotal().toFixed(2)}</label>
                 </div>
-                <FontAwesomeIcon onClick={addCarrinho} className={styles.iconCart} icon={faCartShopping} color='white' size={'2x'} />
+                <FontAwesomeIcon onClick={addCarrinho} className={styles.iconCart} icon={faCartShopping} size={'2x'} />
             </div>
         </div>
     )

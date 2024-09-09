@@ -66,7 +66,8 @@
 }
 .title{
     color: var(--blue);
-    width: 930px;
     max-width: 95%;
-    font-weight: bold;
+    font-size: var(--title);
+    font-weight: 600;
+    margin-bottom: 10px;
 }

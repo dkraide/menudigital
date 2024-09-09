@@ -15,8 +15,6 @@ export default function Produto({produto, id, searchString} : ProdutoProps) {
       <h5 className={styles.classe}>{produto.classe}</h5>
       <div id={id} className={styles.container}>
         {produto.produtos.map(p =>{
-
-          console.log(searchString);
           if(!p.nome.toUpperCase().includes(searchString.toUpperCase())){
             return <div key={-1}></div>
           }

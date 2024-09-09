@@ -160,6 +160,7 @@ export default function Home() {
             return (
               <div key={`${index}c`}>
                 <div id={c.classe + index} className={styles.title}>{c.classe}</div>
+                <DividerLine/>
                 {c.produtos.map((p, ind) => {
                   if (!p.nome.toUpperCase().includes(search.toUpperCase()) &&
                     !p.descricao.toUpperCase().includes(search.toUpperCase())) {
