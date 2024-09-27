@@ -2,10 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from './styles.module.scss';
 import { api } from '@/services/api';
 import IEmpresa from '@/interfaces/IEmpresa';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBusinessTime, faMapLocation, faShoppingCart, faSquarePhone } from '@fortawesome/free-solid-svg-icons';
 import IConfiguracao from '@/interfaces/IConfiguracao';
-import Link from 'next/link';
 
 
 type headerProps = {
@@ -74,8 +71,8 @@ export default function Header({ emp }: headerProps) {
             >
                 <div className={styles.headerContent}>
                     <img
-                        src={'/logoNatuice.jpg'}
-                        alt="Logo Delmar"
+                        src={config.logoPath}
+                        alt="Logo Empresa"
                         className={styles.logo}
                     />
                     <h1>{empresa?.nomeFantasia}</h1>
@@ -84,8 +81,8 @@ export default function Header({ emp }: headerProps) {
                     </div>
                     <hr/>
                     <div className={styles.deliveryInfo}>
-                        <p>Tempo de espera:<br/> 20m - 30m</p>
-                        <p>Taxa de entrega:<br/> A partir R$ 0,00</p>
+                        <p>Tempo de espera:<br/> {config.tempoEspera || 'Menos de 1hr'}</p>
+                        <p>Taxa de entrega:<br/> A partir R$ {config.valorInicial.toFixed(2)}</p>
                     </div>
                 </div>
             </div>
