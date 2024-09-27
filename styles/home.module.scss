@@ -21,6 +21,7 @@
      display: flex;
      align-items: center;
      flex-direction: column;
+     background-color: var(--gray-100);
 }
 .containerCombos{
     width: 930px;
@@ -67,7 +68,8 @@
 .title{
     color: var(--blue);
     max-width: 95%;
-    font-size: var(--title);
+    font-size: 18px;
     font-weight: 600;
     margin-bottom: 10px;
+    margin-top: 20px;
 }

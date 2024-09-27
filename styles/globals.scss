@@ -1,65 +1,82 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
-*{
+* {
     margin: 0;
     padding: 0;
     outline: 0;
     box-sizing: border-box;
 }
 
-div::-webkit-scrollbar{
-    width: 16px;
+div::-webkit-scrollbar {
+    width: 15px;
 }
 
-div::-webkit-scrollbar-track{
-    border-radius: 8px;
+div::-webkit-scrollbar-track {
+    border-radius: 1px;
     background-color: #e7e7e7;
-    border: 1px solid #cacaca;
+    border: none;
 }
 
 div::-webkit-scrollbar-thumb {
-    border-radius: 8px;
-  border: 3px solid transparent;
-   background-clip: content-box;
+    border-radius: 3px;
+    border: 5px solid transparent;
+    background-clip: content-box;
     background-color: var(--blue);
 }
 
-:root{
+:root {
 
---white: #FFF;
---black: #000;
---dark-900: #101026;
---dark-700: #1D1D2E;
---blue: rgb(70, 71, 72);
---blue-dark: rgb(31, 13, 121);
---gray-100: #fbfbfb;
---green-900: #3FFFA3;
---red-900: #FF3F4B;
---title: 15px;
---subTitle: 14px;
---description: 13px;
+    --white: #FFF;
+    --black: #000;
+    --dark-900: #101026;
+    --dark-700: #1D1D2E;
+    --blue: rgb(70, 71, 72);
+    --gray: rgb(70, 71, 72);
+    --gray-700: rgb(126, 126, 126);
+    --blue-dark: rgb(31, 13, 121);
+    --gray-100: #f4f4f4;
+    --green-900: #3FFFA3;
+    --red-900: #FF3F4B;
+    --red-800: #fd505b;
+    --title: 15px;
+    --subTitle: 14px;
+    --description: 13px;
+    --danger: #c74949;
+    --main: #FF3F4B;
+    --main-light: #f78396;
 }
 
-button{
+button {
     cursor: pointer;
 }
-a{
+
+a {
     color: inherit;
     text-decoration: none;
 
-   
+
 
 }
-a:hover{
-    text-decoration:underline;
+
+a:hover {
+    text-decoration: underline;
 }
-body, input, textarea, select, button, label, p{
+
+body,
+input,
+textarea,
+select,
+button,
+label,
+p {
     font-family: 'Roboto', sans-serif;
 }
-body{
+
+body {
     height: 100vh;
 }
-h3{
+
+h3 {
     text-align: center;
     font-family: 'Roboto', sans-serif;
     font-weight: 100;
@@ -67,15 +84,18 @@ h3{
     display: block;
     margin-bottom: 5px;
 }
-
-@media (max-width: 720px){
-   html{
-    font-size: 87.5%; //tamanho da fonte padrao vai gera 14px
-   }
+h4{
+    font-weight: 400;
 }
 
-@media (max-width: 1080x){
-    html{
-     font-size: 93.75%; //tamanho da fonte padrao vai gera 15px
+@media (max-width: 720px) {
+    html {
+        font-size: 87.5%; //tamanho da fonte padrao vai gera 14px
     }
- }
+}
+
+@media (max-width: 1080x) {
+    html {
+        font-size: 93.75%; //tamanho da fonte padrao vai gera 15px
+    }
+}

@@ -11,7 +11,6 @@ export default function OrderProduto(pr: IOrderProduto){
                 <p className={styles.desc}>{pr.descricao}</p>
                 <p className={styles.value}>{pr.quantidade.toFixed(2)} x R${pr.valorUn.toFixed(2)} = R${pr.valorTotal.toFixed(2)}</p>
             </div>
-
         </div>
     )
 }

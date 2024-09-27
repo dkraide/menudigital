@@ -12,6 +12,8 @@ import IClasse from '@/interfaces/IClasse';
 import DividerLine from '@/components/DividerLine';
 import IClasseProduto from '@/interfaces/IClasseProduto';
 import BoxProd from '@/components/Produto/BoxProd';
+import Footer from '@/components/Footer';
+import SearchComponent from '@/components/Home/SearchComponent';
 
 export default function Home() {
 
@@ -55,10 +57,16 @@ export default function Home() {
         console.log(r);
       });
   }
-  function getContain(produtos: IClasseProduto[]): boolean {
+  function getContain(classe: IClasse): boolean {
     let contain = false;
-    produtos.map((p, index) => {
-      if (p.nome.toUpperCase().includes(search.toUpperCase())) {
+    if(classe.classe == search){
+      return true;
+    }
+    classe.produtos.map((p, index) => {
+      if(search.toUpperCase() == 'TODOS'){
+        contain = true;
+      }
+      else if (p.nome.toUpperCase().includes(search.toUpperCase())) {
         contain = true;
       }
     });
@@ -71,7 +79,8 @@ export default function Home() {
       </Head>
       <div className={styles.containerCenter}>
         <Header emp={undefined} />
-        <div className={styles.containerClasses}>
+        <SearchComponent handleSearchChange={setSearch} classes={classes}/>
+        {/* <div className={styles.containerClasses}>
           {combos.length > 0 ? (
             <a className={styles.classeNavigator} href={`#combos`}>
               Combos
@@ -102,16 +111,7 @@ export default function Home() {
 
             )
           })}
-        </div>
-        <div className={styles.containerProds}>
-          <input
-            className={styles.searchInput}
-            placeholder='Pesquisar'
-            value={search}
-            onChange={(e) => { setSearch(e.target.value) }}
-          />
-          <DividerLine />
-        </div>
+        </div> */}
         {combos.length > 0 ? (
           <>
             <div className={styles.title} id="combos">Combos</div>
@@ -145,13 +145,11 @@ export default function Home() {
         ) : (
           <a></a>
         )}
-        <hr />
-
         <div style={{ width: '100%' }}>
         </div>
         <div className={styles.containerProds}>
           {classes.map((c, index) => {
-            let contain = getContain(c.produtos);
+            let contain = getContain(c);
             if (!contain) {
               return (
                 <div key={index}></div>
@@ -160,10 +158,10 @@ export default function Home() {
             return (
               <div key={`${index}c`}>
                 <div id={c.classe + index} className={styles.title}>{c.classe}</div>
-                <DividerLine/>
                 {c.produtos.map((p, ind) => {
-                  if (!p.nome.toUpperCase().includes(search.toUpperCase()) &&
-                    !p.descricao.toUpperCase().includes(search.toUpperCase())) {
+                  if (search.toUpperCase() != 'TODOS' &&  !p.nome.toUpperCase().includes(search.toUpperCase()) &&
+                    !p.descricao.toUpperCase().includes(search.toUpperCase()) && 
+                     c.classe.toUpperCase() != search.toUpperCase()) {
                     return (<></>)
                   }
                   return (<BoxProd key={p.cod} {...p} />)

@@ -6,6 +6,7 @@ import OrderPromocao from "@/components/OrderPromocao";
 import OrderCombo from "@/components/OrderCombo";
 import _ from 'lodash';
 import OrderProduto from "@/components/OrderProduto";
+import CustomButton from "@/components/CustomButton";
 
 export default function Order() {
     const [order, setOrder] = useState<IOrder>();
@@ -45,8 +46,8 @@ export default function Order() {
                     <p>R${getTotal().toFixed(2)}</p>
                 </div>
                 <div className={styles.buttons}>
-                    <a href="/" className={styles.btnContinuar}>Continuar Comprando</a>
-                    <a href="/finalizar" className={styles.btnFinalizar}>Finalizar</a>
+                    <a href="/"><CustomButton typeButton={'outline'}>Voltar</CustomButton></a>
+                    <a href="/finalizar"><CustomButton typeButton={'primary'}>Finalizar</CustomButton></a>
                 </div>
             </div>
 

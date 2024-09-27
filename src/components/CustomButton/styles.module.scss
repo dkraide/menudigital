@@ -1,0 +1,24 @@
+.outline {
+    background-color: var(--white);
+    color: var(--main);
+    border: solid 1px var(--main-light);
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-weight: 600;
+    &:hover {
+        background-color: var(--main-light);
+        color: var(--white);
+    }
+}
+.primary{
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: var(--main);
+    color: var(--white);
+    font-weight: 600;
+    border: none;
+    &:hover {
+        background-color: var(--main-light);
+        color: var(--white);
+    }
+}

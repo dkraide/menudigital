@@ -3,27 +3,44 @@
     flex-direction: row;
     width: 100%;
     flex-wrap: wrap;
-    margin-bottom: 5px;
+    background-color: var(--white);
+    padding: 20px  10px;
+    margin-bottom: 1px;
+    text-decoration: none;
+    &:hover{
+        text-decoration: none;
+        cursor: pointer;
+    }
+    cursor: pointer;
 }
 .containerInfo{
     flex-direction: column;
     display: flex;
     justify-content: space-between;
-    width: 70%;
+    width: 60%;
+    cursor: pointer;
 }
 .pic{
-    width: 30%;
     max-width: 120px;
+    max-height: 120px;
     border-radius: 8px;
 }
 .lblValue{
     padding-right: 5px;
+    cursor: pointer;
 }
 .lblValueOriginal{
     padding-right: 5px;
     text-decoration:line-through;
     font-style: italic;
+    cursor: pointer;
 }
 .lblTitle, .lblValue{
     font-size: var(--subTitle);
+    font-weight: 500;
+    cursor: pointer;
+    
+}
+.lblDesc{
+    cursor: pointer;
 }

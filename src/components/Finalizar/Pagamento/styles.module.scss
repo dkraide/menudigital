@@ -1,0 +1,48 @@
+.container{
+    width: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.card{
+    background-color: white;
+    padding: 10px 20px;
+    width: 100%;
+    min-width: 350px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    h4{
+        text-align: center;
+        margin-bottom: 5px;
+    }
+    table > tbody > tr{
+        margin-bottom: 5px;
+    }
+}
+.tableTotal{
+    font-weight: 600;
+    tr{
+        height: 22px;
+    }
+    tr td:nth-child(1) {
+        text-align: start;
+    }
+    tr td:nth-child(2) {
+        text-align: end;
+    }
+}
+.formas{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    button{
+        width: '30%';
+    }
+}
+
+.dinheiro{
+    margin-top: 10px;
+}

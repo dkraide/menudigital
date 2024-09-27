@@ -1,0 +1,31 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 930px;
+    padding: 10px;
+}
+.containerCarrinho{
+    h4{
+        text-align: center;
+    }
+}
+.containerTotal{
+    width: 100%;
+    padding: 0px 18px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    p{
+        font-size: 18px;
+        font-weight: bold;
+        color: var(--blue);
+    }
+}
+.buttons{
+    width: 100%;
+    padding: 0px 18px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

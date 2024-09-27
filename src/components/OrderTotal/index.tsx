@@ -7,6 +7,7 @@ import IEndereco from '@/interfaces/IEndereco';
 import IUser from '@/interfaces/IUser';
 import { IPedidoOnline, IPedidoOnlineProduto, IPedidoOnlineProdutoAdicional } from '@/interfaces/IPedidoOnline';
 import { api } from '@/services/api';
+import CustomButton from '../CustomButton';
 
 type orderTotalProps = {
   taxa: number;
@@ -178,8 +179,8 @@ export default function OrderTotal({cliente, taxa, isEntrega, endereco }: orderT
         <input value={troco} onChange={(e) => setTroco(Number(e.target.value))} type='number' placeholder='Troco para quanto' hidden={needTroco == 'false'} className={styles.inputTroco}/>
       </div>
       <div className={styles.buttons}>
-        <a href='/' className={styles.btnContinuar}>Continuar Pedido</a>
-        <a onClick={finalizarPedido} hidden={payment === ''} className={styles.btnFinalizar}>Enviar Pedido</a>
+        <CustomButton typeButton={'outline'} >Continuar Pedido</CustomButton>
+        <CustomButton typeButton={'primary'} onClick={finalizarPedido} hidden={payment === ''} >Enviar Pedido</CustomButton>
       </div>
     </div>
   )

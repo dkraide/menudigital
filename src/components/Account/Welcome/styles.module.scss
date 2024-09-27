@@ -1,0 +1,21 @@
+.container{
+    margin-top: 50px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+
+    button{
+        height: 20px;
+        width: 20px;
+        font-size: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+    }
+}
+.welcomeText{
+    margin-right: 10px;
+    margin-top: 2px;
+}

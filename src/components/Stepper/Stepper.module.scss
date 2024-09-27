@@ -1,0 +1,58 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #cccccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.line {
+  margin-top: -18px;
+  margin: -18px 10px 0px 10px;
+  width: 30px;
+  height: 2px;
+  background-color: #ccc;
+  z-index: 0;
+}
+.stepCircle{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 60px;
+  z-index: 1;
+
+}
+.stepWrapper{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 50px;
+  width: 90px;
+}
+.stepText {
+  color: #fff;
+  font-size: 18px;
+}
+.stepLabel {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+}
+.activeCircle {
+  background-color: var(--main);
+}
+
+.activeStep .line {
+  background-color: var(--main); /* A cor da linha será verde se o passo for ativo ou anterior */
+}
+

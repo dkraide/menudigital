@@ -3,88 +3,104 @@ import styles from './styles.module.scss';
 import { useEffect, useState } from 'react';
 import IUser from '@/interfaces/IUser';
 import User from '@/components/User';
-import DividerLine from '@/components/DividerLine';
-import OrderEntrega from '@/components/OrderEntrega';
 import IEndereco from '@/interfaces/IEndereco';
-import OrderTotal from '@/components/OrderTotal';
+import Stepper2 from '@/components/Stepper';
+import Carrinho from '@/components/Finalizar/Carrinho';
+import Entrar from '@/components/Finalizar/Entrar';
+import { IOrder } from '@/interfaces/IOrder';
+import CarrinhoVazio from '@/components/Finalizar/CarrinhoVazio';
+import Entrega from '@/components/Finalizar/Entrega';
+import Pagamento from '@/components/Finalizar/Pagamento';
+
 export default function Finalizar() {
     const [user, setUser] = useState<IUser>({} as IUser);
-    const [isEntrega, setIsEntrega] = useState(0);
-    const [taxa, setTaxa] = useState(-1);
-    const [endereco, setEndereco] = useState({} as IEndereco);
+    const [step, setStep] = useState(0);
+    const [order, setOrder] = useState<IOrder>();
     useEffect(() => {
-        var strUser = sessionStorage.getItem('user');
-        var u = JSON.parse(strUser || '{}');
-        if(u.name !== undefined){
-             setUser(u);
+        var obj = JSON.parse(sessionStorage.getItem('order') || '{}') as IOrder;
+        if (obj.promocoes === undefined) {
+            obj.promocoes = [];
         }
-    },[]);
+        if (obj.combos === undefined) {
+            obj.combos = [];
+        }
+        if (obj.produtos === undefined) {
+            obj.produtos = [];
+        }
+        setOrder({ ...obj });
 
-    function handleUser(user: IUser, isLogin: boolean){
-            if(isLogin){
-                sessionStorage.setItem('user', JSON.stringify(user));
-                setUser(user);
-            }else{
-                sessionStorage.setItem('user', '{}');
-                window.location.reload();
-            }
-    }
-    function handleTaxa(address: IEndereco, taxa: number){
-         setTaxa(taxa);
-         setEndereco(address);
-    }
-    function sendOrder(){
-        var pedido = {
-             id: 0,
-             idpedidoOnline: 0,
-             cliente: user.name,
-             telefone: user.phone,
-             empresa: sessionStorage.getItem('empresa'),
-             valorProdutos: 0
-        };
-    }
-    function buildScreen(){
-        if(isEntrega == 0){
-            return (<></>);
-        }
-        if(isEntrega == 1){
-          return(
-            <>
-            <OrderEntrega handleTaxa={handleTaxa}/>
-            <br/>
-            <DividerLine/>
-            <br/>
-            {taxa >= 0 ?
-             (<OrderTotal cliente={user} isEntrega={true} endereco={endereco} taxa={taxa}/>)
-            : (<></>)}
-          </>
-          );
-        }
-        if(isEntrega == 2){
-           return (<OrderTotal cliente={user} isEntrega={false} endereco={endereco} taxa={0}/>);
+    }, []);
+
+
+    function handleUser(user: IUser, isLogin: boolean) {
+        if (isLogin) {
+            sessionStorage.setItem('user', JSON.stringify(user));
+            setUser(user);
+            setStep(2);
+        } else {
+            sessionStorage.setItem('user', '{}');
+            window.location.reload();
         }
     }
+    function handleTaxa(address?: IEndereco, taxa?: number) {
+
+        order.cliente = user.name;
+        order.telefone = user.phone;
+        if (address) {
+            order.bairro = address.bairro;
+            order.cep = address.cep;
+            order.cidade = address.cidade?.nome;
+            order.complemento = address.compl;
+            order.logradouro = address.logradouro;
+            order.numero = address.numero;
+            order.valorFrete = taxa || 0;
+            order.valorTotal = order.valorProdutos - (order.valorDesconto || 0) + order.valorFrete;
+            setOrder({...order});
+            setStep(3)
+        } else {
+            order.isParaEntrega = false;
+            order.valorFrete = 0;
+            setOrder({...order});
+            setStep(3)
+        }
+    }
+    function handleCarrinho(pedido){
+        setOrder(pedido);
+        setStep(1);
+
+
+    }
+
+    const renderItem = () => {
+        switch (step) {
+            case 0:
+                return <Carrinho handleNext={handleCarrinho} />;
+            case 1:
+                return <Entrar handleUser={handleUser} />
+            case 2:
+                return <Entrega handleTaxa={handleTaxa} />
+            case 3:
+                return <Pagamento order={order} handleConfirm={() => { setStep(1) }} />;
+        }
+        return <></>
+    }
+
+    if (!order || (order.produtos?.length == 0 && order.combos?.length == 0 && order.promocoes?.length == 0)) {
+        return (
+            <div className={styles.container}>
+                <Header />
+                <CarrinhoVazio />
+            </div>
+        )
+
+    }
+    console.log(order);
+
     return (
-       <div className={styles.container}>
-         <div className={styles.containerCenter}>
+        <div className={styles.container}>
             <Header />
-            <h2>Meus Dados</h2>
-            <User handleUser={handleUser} user={user} isLoggedIn={user.name !== undefined }/>
-            <DividerLine/>
-            {user.name !== undefined ? (
-               <>
-                <div className={styles.buttons}>
-                <button hidden={isEntrega == 2} onClick={() => {setIsEntrega(2); setTaxa(0)}} className={styles.btnRetira}>Retirar na Loja</button>
-                <button hidden={isEntrega == 1} onClick={() => {setIsEntrega(1); setTaxa(-1)}} className={styles.btnEntrega}>Entregar</button>
-                </div>
-                {buildScreen()}
-               
-               </>
-            ) : (
-                <></>
-            )}
-            
+            <Stepper2 steps={['Carrinho', 'Entrar', 'Entrega', 'Pagamento']} currentStep={step} />
+            {renderItem()}
         </div>
-       </div>
     )
 }

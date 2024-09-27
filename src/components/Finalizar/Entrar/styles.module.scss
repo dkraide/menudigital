@@ -1,0 +1,20 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+.powerOff{
+    background-color: var(--main);
+    padding:10px;
+    color: white;
+    height: 10px;
+    width: 10px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 50%;
+}
+.title{
+    text-align: center;
+    font-weight: 400;
+}

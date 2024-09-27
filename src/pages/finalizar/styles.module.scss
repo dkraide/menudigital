@@ -1,12 +1,9 @@
 .container{
-    min-height: 100vh;
+    height: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;
-}
-.containerCenter{
-    max-width: 930px;
-    width: 95%;
+    background-color: var(--gray-100);
 }
 .buttons{
     justify-content: space-between;
@@ -14,19 +11,4 @@
     display: flex;
     padding: 0px 10px;
     margin: 5px 0px;
-    button{
-        max-width: 45%;
-        width: 200px;
-        padding: 5px;
-        border: none;
-        background-color: var(--blue);
-        color:white;
-        border-radius: 4px;
-        font-weight: bold;
-        transition: all 0.1s;
-        &:active{
-            background-color: white;
-            color: var(--blue);
-        }
-    }
 }

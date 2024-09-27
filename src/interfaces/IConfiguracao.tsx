@@ -1,6 +1,8 @@
 export default interface IConfiguracao{
   corFundo: string;
   localPath: string;
+  instagram: string;
+  facebook: string;
   horarios: Horario[];
 }
 export interface Horario{

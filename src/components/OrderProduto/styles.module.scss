@@ -2,18 +2,19 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    margin-bottom: 5px;
+    margin-bottom: 1px;
+    background-color: var(--white);
+    border-radius: 6px;
+    padding: 10px
 }
 .imgI{
-    width: 50px;
-    height: 50px;
-    border-radius: 9px;
-    border: solid 1px;
+
+    width: 60px;
+    height: 60px;
 }
 .promoDesc{
     padding-left: 5px;
     height: 100%;
-    width: 70%;
 }
 .desc{
     margin-top: 5px;
@@ -21,8 +22,10 @@
     font-style: italic;
 }
 .value{
-    font-size: 12px;
-    font-style: italic;
+    margin-top: 5px;
+    font-size: 13px;
+    text-align: end;
+    font-weight: 500;
     color:(--blue);
 }
 .title{

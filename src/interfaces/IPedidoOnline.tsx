@@ -17,6 +17,8 @@ export interface IPedidoOnline {
   troco: number;
   pagamento: string;
   produtos: IPedidoOnlineProduto[];
+  status: string
+  dataPedido: Date
 }
 
 export interface IPedidoOnlineProduto{

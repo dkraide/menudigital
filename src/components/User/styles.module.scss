@@ -1,61 +1,16 @@
 .container{
     display: flex;
-    flex-direction: row;
-    padding: 0px 10px;
+    flex-direction: column;
+    padding: 10px;
 }
-.inputGroup{
-    width: 50%;
-    max-width: 200px;
-
-
-    input{
-        border-radius: 3px;
-        padding: 4px;
-        border-color: var(--blue);
-        color: var(--blue);
-        border-width: 1px;
-    }
-    label{
-        color: var(--blue);
-        font-weight: bold;
-        font-style: italic;
-    }
-}
-.btnEntrar{
-    padding: 5px;
-    padding: 5px;
-    margin: 5px 0px;
-    border-radius: 4px;
-    font-size: 15px;
-    font-weight: bold;
-    text-decoration: none;
-    max-width: 200px;
-    width: 48%;
-    text-align: center;
-    background-color: rgb(145, 253, 145);
-    color: rgb(0, 112, 4);
-    transition: all 0.1s;
-    &:active{
-     background-color: rgb(10, 65, 11);
-    }
-    border:none;
-}
-.btnSair{
-    padding: 5px;
-    padding: 5px;
-    margin: 5px 0px;
-    border-radius: 4px;
-    font-size: 15px;
-    font-weight: bold;
-    text-decoration: none;
-    max-width: 200px;
-    width: 48%;
-    text-align: center;
-    background-color: rgb(145, 246, 253);
-   color: rgb(0, 32, 34);
-   transition: all 0.1s;
-   &:active{
-    background-color: rgb(6, 140, 150);
-   }
-    border:none;
+.powerOff{
+    background-color: var(--main);
+    padding:10px;
+    color: white;
+    height: 10px;
+    width: 10px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 50%;
 }

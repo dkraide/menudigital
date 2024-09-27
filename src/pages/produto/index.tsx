@@ -160,12 +160,11 @@ export default function Produto() {
                 <div className={styles.divImage}>
                     <img className={styles.img} src={produto.imagem} alt='imagem do prdouto' />
                 </div>
-                <DividerLine/>
                 <p className={styles.nomeProduto} >{produto.nome}</p>
                 <p className={styles.descricao}>{produto.descricao}</p>
                 <p className={styles.preco}>A partir de R$ {produto?.valor?.toFixed(2)}</p>
             </div>
-            <DividerLine/>
+            <DividerLine />
             <div hidden={produto.opcionais === undefined || produto.opcionais.length == 0} className={styles.containerOpcionais}>
                 <div className={styles.coHeader}>
                     Desmarque caso nao queira algum dos ingredientes =)
@@ -184,7 +183,7 @@ export default function Produto() {
                 (<></>)}
             <div className={styles.containerOpcionais}>
                 <div className={styles.coHeader}>
-                   Observações para  o estabelecimento
+                    Observações para  o estabelecimento
                 </div>
                 <div>
                     <textarea placeholder='Clique aqui para inserir observação' className={styles.obs} value={obs} onChange={(e) => setObs(e.target.value)}></textarea>
@@ -193,7 +192,7 @@ export default function Produto() {
             <div className={styles.containerButtons}>
                 <FontAwesomeIcon onClick={() => { addProd('-') }} className={styles.icon} icon={faMinus} />
                 <input readOnly value={quantidade} />
-                <FontAwesomeIcon onClick={() => { addProd('+') }} className={styles.icon} icon={faPlus} size={'sm'}/>
+                <FontAwesomeIcon onClick={() => { addProd('+') }} className={styles.icon} icon={faPlus} size={'sm'} />
             </div>
             <div className={styles.containerCarrinho}>
                 <div>
@@ -208,7 +207,9 @@ export default function Produto() {
                     <label className={styles.carrinhoDesc}>Total:</label>
                     <label className={styles.carrinhoVal}>R${getTotal().toFixed(2)}</label>
                 </div>
-                <FontAwesomeIcon onClick={addCarrinho} className={styles.iconCart} icon={faCartShopping} size={'2x'} />
+                <button onClick={addCarrinho} className={styles.iconCart}>
+                    <FontAwesomeIcon   icon={faCartShopping} size={'2x'} />
+                </button>
             </div>
         </div>
     )

@@ -1,0 +1,78 @@
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 10px;
+    margin-top: 30px;
+
+    div::-webkit-scrollbar {
+        width: 15px;
+    }
+
+    height: 30px;
+}
+
+.items {
+    padding: 10px 0px;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    /* Permite rolagem horizontal se necessário */
+    align-items: center;
+}
+
+.box {
+    cursor: pointer;
+    display: inline-block;
+    white-space: nowrap;
+    margin-right: 10px;
+    padding: 5px 10px;
+    border-radius: 3px;
+    border: 1px solid var(--gray-700);
+    color: var(--gray-700);
+    font-weight: 500;
+}
+
+.boxSelected {
+    cursor: pointer;
+    display: inline-block;
+    white-space: nowrap;
+    margin-right: 10px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid var(--dark-700);
+    font-weight: 500;
+    display: inline-block;
+    background-color: var(--dark-700);
+    color: var(--white);
+}
+
+.searchInput {
+    padding: 10px 10px;
+    margin-right: 5px;
+    font-weight: 500;
+    color: var(--gray-700);
+    border: none;
+    flex: 1;
+}
+
+.searchInput::placeholder {
+    color: grey;
+    font-size: 16px;
+    font-style: italic;
+    opacity: 1; /* controle de opacidade do placeholder */
+  }
+  
+.searchInput:focus::placeholder {
+    color: lightgray;
+  }
+
+.btnSearch {
+    width: 20%;
+    margin-left: auto;
+    border: none;
+    background-color: var(--main);
+    color: white;
+    padding: 9.5px;
+}

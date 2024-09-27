@@ -1,39 +1,47 @@
-.containerCenter{
-    height: 100%;
+.containerCenter {
+    height: calc(100% - 60px);
     display: flex;
     align-items: center;
     flex-direction: column;
+    overflow: auto;
 }
-.divImage{
-    height: 200px;
+
+.divImage {
+    height: 250px;
     width: 100%;
-    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.img{
-    width: 100%;
-    height: 200px;
-    object-fit:fill;
+
+.img {
+    width: 300px;
+    height: 250px;
     border-radius: 2px;
 }
-.nomeProduto{
+
+.nomeProduto {
     font-size: 16px;
     font-weight: 600;
     font-style: normal;
     width: 100%;
 }
-.descricao{
+
+.descricao {
     font-size: 15px;
     font-weight: 400;
     font-style: normal;
     width: 100%;
 }
-.preco{
+
+.preco {
     font-size: 15px;
     font-weight: 500;
     color: rgb(144, 142, 142);
     width: 100%;
 }
-.title{
+
+.title {
     margin: 0 auto;
     max-width: 205px;
     text-align: center;
@@ -41,99 +49,111 @@
     font-weight: bold;
     padding: 2px;
 }
-.containerPromo{
+
+.containerPromo {
     max-width: 90%;
     width: 930px;
 
-    h5{
+    h5 {
         text-align: center;
         font-style: italic;
         font-weight: normal;
         font-size: 13px;
     }
 }
-.containerButtons{
+
+.containerButtons {
     border-radius: 4px;
-    height: 40px;
+    height: 30px;
     display: flex;
     flex-direction: row;
     border: solid 1px #636363;
-    padding: 10px;
-    margin-bottom: 5px;
-    margin-top: auto;
-    input{
+    padding: 5px;
+    input {
         border: none;
         text-align: center;
         max-width: 60px;
-        font-size: 25px;
+        font-size: 20px;
     }
 }
-.icon{
+
+.icon {
     height: 100%;
     cursor: pointer;
     transition: all 0.3s;
     font-size: 1px !important;
 }
 
-.icon:active{
+.icon:active {
     background-color: rgb(149, 148, 148);
     color: var(--blue);
     -webkit-tap-highlight-color: transparent;
 }
-.containerCarrinho{
-    position: absolute;
-    bottom: 0;
+
+.containerCarrinho {
     display: flex;
     flex-direction: row;
     width: 100%;
     height: 60px;
     background-color: #f6f1f1;
-    border-top-width: 1px;
     justify-content: space-between;
     align-items: center;
-    padding:20px;
+    padding: 20px;
     max-width: 500px;
-    div{
+    margin-bottom: 60px;
+    div {
         display: flex;
         flex-direction: column;
     }
 }
-.carrinhoVal{
+
+.carrinhoVal {
     font-weight: bold;
 }
-.carrinhoDesc{
+
+.carrinhoDesc {
     font-style: italic;
 }
-.iconCart{
+
+.iconCart {
     transition: all 0.3s;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
-    color: #0aa014;
-    &:active{
-       font-size: 35px;
+    background-color: #0aa014;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    &:active {
+        font-size: 14px;
     }
 }
-.containerOpcionais{
- width: 95%;
- max-width: 930px;
-  border: solid 2px;
-  border-color: var(--blue);
-  margin: 5px 0px;
-  border-radius: 4px;
+
+.containerOpcionais {
+    width: 95%;
+    max-width: 930px;
+    border: solid 1px;
+    border-color: var(--blue);
+    margin: 5px 0px;
+    border-radius: 3px;
 }
-.coHeader{
-  background-color: #f6f1f1;
-  padding: 5px;
-  text-align: center;
-  font-weight: 500;
+
+.coHeader {
+    background-color: #f6f1f1;
+    padding: 5px;
+    text-align: center;
+    font-weight: 500;
 }
-.coContent{
+
+.coContent {
     height: auto;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     padding: 5px;
 }
-.obs{
+
+.obs {
     width: 100%;
     height: 100%;
     border: none;
