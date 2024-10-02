@@ -8,12 +8,14 @@ import IEndereco from '@/interfaces/IEndereco';
 import { toast } from 'react-toastify';
 import CustomButton from '@/components/CustomButton';
 import { InputFormMask, InputGroup } from '@/components/CustomInput';
+import IConfiguracao from '@/interfaces/IConfiguracao';
 
 type orderEntregaProps = {
     handleTaxa: (endereco?: IEndereco, taxa?: number) => void;
+    configuracao: IConfiguracao
 }
 
-export default function Entrega({ handleTaxa }: orderEntregaProps) {
+export default function Entrega({ handleTaxa, configuracao }: orderEntregaProps) {
     const [cep, setCep] = useState('');
     const [isReadOnly, setIsReadOnly] = useState(false);
     const nroRef = useRef<HTMLInputElement>(null);
@@ -70,7 +72,7 @@ export default function Entrega({ handleTaxa }: orderEntregaProps) {
                 <CustomButton style={{width: '40%'}} onClick={() => {
                     handleTaxa();
                 }} typeButton={'outline'}>Balcão</CustomButton>
-                <CustomButton style={{width: '40%'}}  onClick={() => {
+                <CustomButton  disabled={!configuracao?.aberto || !configuracao?.entrega} style={{width: '40%'}}  onClick={() => {
                     setTypeEntrega('ENTREGA');
                 }} typeButton={'primary'}>Entregar</CustomButton>
 

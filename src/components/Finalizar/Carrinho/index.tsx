@@ -57,7 +57,7 @@ export default function Carrinho({ handleNext }: carrinhoProps) {
             </div>
             <DividerLine/>
             <div className={styles.buttons}>
-                <CustomButton onClick={() => { window.location.href = '/' }} typeButton={'outline'}>Voltar</CustomButton>
+                <CustomButton onClick={() => { window.location.href = '/' }} typeButton={'outline'}>Comprar mais</CustomButton>
                 <CustomButton onClick={() => {handleNext(order)}} typeButton={'primary'}>Confirmar</CustomButton>
             </div>
         </div>

@@ -21,4 +21,8 @@
         background-color: var(--main-light);
         color: var(--white);
     }
+    &:disabled{
+        background-color: rgb(240, 186, 186);
+        cursor: not-allowed;
+    }
 }

@@ -8,22 +8,34 @@ import _ from 'lodash';
 type boxAdicionalProp = {
     grupo: IGrupoAdicional;
     index: number;
-    changeQuantity: (type: string, indexGroup: number,  index: number) => void;
+    changeQuantity: (type: string, indexGroup: number, index: number) => void;
 }
 export default function BoxAdicional({ grupo, changeQuantity, index }: boxAdicionalProp) {
-    function getTotal(): number{
-       return _.sumBy(grupo.itens, e => e.quantidade);
+    function getTotal(): number {
+        return _.sumBy(grupo.itens, e => e.quantidade);
+    }
+
+    function getText(){
+        if(grupo.min == grupo.max){
+            return `Selecione ${grupo.max} ${grupo.descricao}`
+        }
+        if(grupo.min == 0){
+            return `Selecione até ${grupo.max} ${grupo.descricao}`;
+        }
+        return `Selecione ao menos ${grupo.min} até ${grupo.max} ${grupo.descricao}`;
     }
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <b>Selecione ate {grupo.max} de {grupo.descricao}</b>
-                <p>Min: {grupo.min} | Max: {grupo.max}</p>
-                <p>Selecionado: {getTotal()}</p>
+                <div className={styles.row}>
+                    <b>{getText()}</b>
+                    <p>{grupo.min > 0 ? `Entre ${grupo.min} e ${grupo.max}` : `Até ${grupo.max}`} {grupo.max > 1 ? `opções` : `opção`}</p>
+                </div>
+                <p className={styles.selected}>Selecionado: {getTotal()}</p>
             </div>
             <div className={styles.content}>
                 {grupo.itens.map((item, indexItem) => {
-                    if(item.quantidade === undefined){
+                    if (item.quantidade === undefined) {
                         item.quantidade = 0;
                     }
 
@@ -31,16 +43,21 @@ export default function BoxAdicional({ grupo, changeQuantity, index }: boxAdicio
                         <div className={styles.item} key={item.id}>
                             <img onError={({ currentTarget }) => {
                                 currentTarget.onerror = null; // prevents looping
-                                currentTarget.src = "https://krd.emartim.com.br/MenuDigital/1072_998.jpg";
+                                currentTarget.src = '/comida.png';
                             }} src={item.imagem} alt='Imagem do adicional'></img>
                             <div className={styles.itemInfo}>
                                 <b>{item.nome}</b>
                                 <p>R$ {item.valor.toFixed(2)}</p>
                             </div>
                             <div className={styles.containerButtons}>
-                                <FontAwesomeIcon onClick={() => { changeQuantity('-', index, indexItem) }} className={styles.icon} icon={faMinus} />
+                                <div className={styles.icon}>
+                                    <FontAwesomeIcon onClick={() => { changeQuantity('-', index, indexItem) }} icon={faMinus} />
+                                </div>
                                 <input readOnly value={item.quantidade} />
-                                <FontAwesomeIcon onClick={() => { changeQuantity('+', index, indexItem) }} className={styles.icon} icon={faPlus} />
+                                <div className={styles.icon}>
+                                    <FontAwesomeIcon onClick={() => { changeQuantity('+', index, indexItem) }} icon={faPlus} />
+
+                                </div>
                             </div>
                         </div>
                     )

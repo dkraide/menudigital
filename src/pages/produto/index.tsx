@@ -11,6 +11,7 @@ import BoxAdicional from '@/components/Produto/BoxAdicional';
 import CustomCheckbox from '@/components/CustomCheckbox';
 import { toast } from 'react-toastify';
 import DividerLine from '@/components/DividerLine';
+import CustomButton from '@/components/CustomButton';
 
 export default function Produto() {
     const [produto, setProduto] = useState({} as IClasseProduto);
@@ -117,7 +118,7 @@ export default function Produto() {
                 });
             });
         }
-        prod.id = produto.idProduto;
+        prod.id = produto.id;
         prod.imagem = produto.imagem;
         prod.nome = produto.nome;
         prod.quantidade = quantidade;
@@ -128,7 +129,7 @@ export default function Produto() {
         }
         order.produtos.push(prod);
         sessionStorage.setItem('order', JSON.stringify(order));
-        window.location.href = `/order`;
+        window.location.href = `/finalizar`;
     }
     function getTotal(): number {
         var total = getTotalUnitario();
@@ -189,27 +190,22 @@ export default function Produto() {
                     <textarea placeholder='Clique aqui para inserir observação' className={styles.obs} value={obs} onChange={(e) => setObs(e.target.value)}></textarea>
                 </div>
             </div>
-            <div className={styles.containerButtons}>
-                <FontAwesomeIcon onClick={() => { addProd('-') }} className={styles.icon} icon={faMinus} />
-                <input readOnly value={quantidade} />
-                <FontAwesomeIcon onClick={() => { addProd('+') }} className={styles.icon} icon={faPlus} size={'sm'} />
-            </div>
+
             <div className={styles.containerCarrinho}>
-                <div>
-                    <label className={styles.carrinhoDesc}>Qntd:</label>
-                    <label className={styles.carrinhoVal}>{quantidade}</label>
+                <div className={styles.containerButtons}>
+                    <div className={styles.icon}>
+                        <FontAwesomeIcon onClick={() => { addProd('-') }} icon={faMinus} />
+                    </div>
+                    <input readOnly value={quantidade} />
+                    <div className={styles.icon}>
+                        <FontAwesomeIcon onClick={() => { addProd('+') }} icon={faPlus} />
+
+                    </div>
                 </div>
-                <div>
-                    <label className={styles.carrinhoDesc}>Vlr Un.</label>
-                    <label className={styles.carrinhoVal}>R${getTotalUnitario().toFixed(2)}</label>
-                </div>
-                <div>
-                    <label className={styles.carrinhoDesc}>Total:</label>
-                    <label className={styles.carrinhoVal}>R${getTotal().toFixed(2)}</label>
-                </div>
-                <button onClick={addCarrinho} className={styles.iconCart}>
-                    <FontAwesomeIcon   icon={faCartShopping} size={'2x'} />
-                </button>
+                <CustomButton typeButton={'primary'} className={styles.btnCarrinho} onClick={addCarrinho}>
+                    <label className={styles.carrinhoDesc}>Adicionar</label>
+                    <label className={styles.carrinhoVal}>R$ {getTotal().toFixed(2)}</label>
+                </CustomButton>
             </div>
         </div>
     )

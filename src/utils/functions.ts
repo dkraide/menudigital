@@ -33,7 +33,7 @@ export function createPedido(order: IOrder): IPedidoOnline {
     po.telefone = order.telefone;
 
     po.complemento = order.complemento;
-    po.empresa = order.empresa;
+    po.empresaId = Number(getEmpresa());
     po.id = 0;
     po.isParaEntrega = order.isParaEntrega;
     po.logradouro = order.logradouro;

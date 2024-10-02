@@ -19,41 +19,21 @@ export default function Header({ emp }: headerProps) {
     useEffect(() => {
         var empresa = emp || sessionStorage.getItem('empresa') || '';
         getEmpresa(empresa);
-
-        var strConfig = sessionStorage.getItem('config');
-        if (strConfig !== null) {
-            setConfig(JSON.parse(strConfig));
-        }
-
     }, []);
-    function getEmpresa(empr: string) {
-        api
-            .get(`/MenuDigital/Empresa/${empr}`)
+    async function getEmpresa(empr: string) {
+        await api.get(`/MenuDigital/Empresa/${empr}`)
             .then((r) => {
                 setEmpresa(r.data);
-                setLoading(false);
             }).catch((r) => {
             });
-        api
+        await api
             .get(`/MenuDigital/Configuracao?id=${empr}&withHorarios=true`)
             .then((r) => {
                 setConfig(r.data);
-                setLoading(false);
             }).catch((r) => {
             });
-    }
-    function getHorarios() {
-        setHiddenHorario(!hiddenHorario);
 
-        if (!config) {
-            api.get(`/MenuDigital/Configuracao?id=${empresa?.id}&withHorarios=true`)
-                .then((r) => {
-                    setConfig(r.data);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
+            setLoading(false);
 
     }
     if (loading || !config) {
@@ -77,7 +57,7 @@ export default function Header({ emp }: headerProps) {
                     />
                     <h1>{empresa?.nomeFantasia}</h1>
                     <div className={styles.info}>
-                        <span className={styles.status}>🟢 Aberto</span>
+                        <span className={config.aberto ? styles.open : styles.closed}>{config.aberto ? '🟢 Aberto' : '🔴 Fechado'}</span>
                     </div>
                     <hr/>
                     <div className={styles.deliveryInfo}>

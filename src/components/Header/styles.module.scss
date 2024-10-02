@@ -57,8 +57,13 @@
     margin-bottom: 10px;
 }
 
-.status {
+.open {
     color: green;
+    font-weight: 500;
+    font-size: 12px;
+}
+.closed {
+    color: rgb(174, 18, 18);
     font-weight: 500;
     font-size: 12px;
 }

@@ -11,11 +11,14 @@ import { IOrder } from '@/interfaces/IOrder';
 import CarrinhoVazio from '@/components/Finalizar/CarrinhoVazio';
 import Entrega from '@/components/Finalizar/Entrega';
 import Pagamento from '@/components/Finalizar/Pagamento';
+import IConfiguracao from '@/interfaces/IConfiguracao';
+import { api } from '@/services/api';
 
 export default function Finalizar() {
     const [user, setUser] = useState<IUser>({} as IUser);
     const [step, setStep] = useState(0);
     const [order, setOrder] = useState<IOrder>();
+    const [configuracao, setConfiguracao] = useState<IConfiguracao>();
     useEffect(() => {
         var obj = JSON.parse(sessionStorage.getItem('order') || '{}') as IOrder;
         if (obj.promocoes === undefined) {
@@ -28,6 +31,17 @@ export default function Finalizar() {
             obj.produtos = [];
         }
         setOrder({ ...obj });
+
+        const loadConfig = async () => {
+            var empresa =  sessionStorage.getItem('empresa') || '';
+            await api
+            .get(`/MenuDigital/Configuracao?id=${empresa}&withHorarios=true`)
+            .then((r) => {
+                setConfiguracao(r.data);
+            }).catch((r) => {
+            });
+        }
+        loadConfig();
 
     }, []);
 
@@ -55,6 +69,7 @@ export default function Finalizar() {
             order.numero = address.numero;
             order.valorFrete = taxa || 0;
             order.valorTotal = order.valorProdutos - (order.valorDesconto || 0) + order.valorFrete;
+            order.isParaEntrega = true;
             setOrder({...order});
             setStep(3)
         } else {
@@ -67,8 +82,6 @@ export default function Finalizar() {
     function handleCarrinho(pedido){
         setOrder(pedido);
         setStep(1);
-
-
     }
 
     const renderItem = () => {
@@ -78,7 +91,7 @@ export default function Finalizar() {
             case 1:
                 return <Entrar handleUser={handleUser} />
             case 2:
-                return <Entrega handleTaxa={handleTaxa} />
+                return <Entrega handleTaxa={handleTaxa} configuracao={configuracao}/>
             case 3:
                 return <Pagamento order={order} handleConfirm={() => { setStep(1) }} />;
         }
@@ -94,8 +107,6 @@ export default function Finalizar() {
         )
 
     }
-    console.log(order);
-
     return (
         <div className={styles.container}>
             <Header />

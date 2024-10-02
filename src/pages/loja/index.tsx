@@ -48,6 +48,8 @@ export default function Loja() {
         )
 
     }
+
+
     return (
         <div className={styles.container}>
             <Header />
@@ -68,9 +70,9 @@ export default function Loja() {
                             <span>Contato</span>
                         </div>
                         <div className={styles.cardBody}>
-                            <Contato url={`https://api.whatsapp.com/send?phone=+55${fGetOnlyNumber(empresa.telefone)}&text=Ola, vim do Menu Digital!`} className={'whatsapp'} icon={faWhatsapp} name={'WhatsApp'} />
-                            <Contato url={config.instagram} className={'instagram'} icon={faInstagram} name={'Instagram'} />
-                            <Contato url={config.facebook} className={'facebook'} icon={faFacebook} name={'Facebook'} />
+                            {empresa?.telefone && <Contato url={`https://api.whatsapp.com/send?phone=+55${fGetOnlyNumber(empresa.telefone)}&text=Ola, vim do Menu Digital!`} className={'whatsapp'} icon={faWhatsapp} name={'WhatsApp'} />}
+                            {config?.instagram && <Contato url={config.instagram} className={'instagram'} icon={faInstagram} name={'Instagram'} />}
+                            {config?.facebook && <Contato url={config.facebook} className={'facebook'} icon={faFacebook} name={'Facebook'} />}
                         </div>
                     </div>
                 </div>

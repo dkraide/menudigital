@@ -1,5 +1,6 @@
 
 export default interface IClasseProduto{
+    id: number;
     idProduto: number;
     cod: number;
     descricao: string;

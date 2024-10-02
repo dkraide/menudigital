@@ -2,7 +2,7 @@ export interface IPedidoOnline {
   cliente: string;
   id: number;
   telefone: string;
-  empresa: string;
+  empresaId: number;
   valorProdutos: number;
   valorFrete: number;
   valorTotal: number;

@@ -7,6 +7,8 @@ export default interface IConfiguracao{
   facebook: string;
   horarios: Horario[];
   valorInicial: number
+  aberto: boolean
+  entrega: boolean
 }
 export interface Horario{
    abertura: string;
