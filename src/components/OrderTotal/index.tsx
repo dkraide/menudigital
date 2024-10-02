@@ -8,6 +8,7 @@ import IUser from '@/interfaces/IUser';
 import { IPedidoOnline, IPedidoOnlineProduto, IPedidoOnlineProdutoAdicional } from '@/interfaces/IPedidoOnline';
 import { api } from '@/services/api';
 import CustomButton from '../CustomButton';
+import { fGetNumber } from '@/utils/functions';
 
 type orderTotalProps = {
   taxa: number;
@@ -76,7 +77,7 @@ export default function OrderTotal({cliente, taxa, isEntrega, endereco }: orderT
     po.telefone = order.telefone;
 
     po.complemento = order.complemento;
-    po.empresa = emp;
+    po.empresaId = fGetNumber(emp);
     po.id = 0;
     po.isParaEntrega = order.isParaEntrega;
     po.logradouro = order.logradouro;
