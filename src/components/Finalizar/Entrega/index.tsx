@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import CustomButton from '@/components/CustomButton';
 import { InputFormMask, InputGroup } from '@/components/CustomInput';
 import IConfiguracao from '@/interfaces/IConfiguracao';
+import { AddressSearch, IAddressSearchResult } from '@/components/AddressSearch';
 
 type orderEntregaProps = {
     handleTaxa: (endereco?: IEndereco, taxa?: number) => void;
@@ -21,41 +22,29 @@ export default function Entrega({ handleTaxa, configuracao }: orderEntregaProps)
     const nroRef = useRef<HTMLInputElement>(null);
     const [endereco, setEndereco] = useState<IEndereco>({} as IEndereco);
     const [empresa, setEmpresa] = useState('');
-    const [taxa, setTaxa] = useState(-1);
-   const  [typeEntrega, setTypeEntrega] = useState<''| 'ENTREGA' | 'RETIRA'>('');
+    const [typeEntrega, setTypeEntrega] = useState<'' | 'ENTREGA' | 'RETIRA'>('');
     useEffect(() => {
         setEmpresa(sessionStorage.getItem('empresa') || '');
     }, []);
-    function searchCep() {
-        api.get(`/MenuDigital/cep/${cep.replaceAll('-', '')}`)
-            .then(({ data }: AxiosResponse<IEndereco>) => {
-                setEndereco(data);
-                getTaxaEntrega(data.latitude, data.longitude);
-                setTimeout(() => {
-                    nroRef.current?.focus();
-                }, 300);
-            })
-            .catch((err) => {
-                toast.error(err.response.data);
-            });
-    }
-    function cleanCep() {
-        setCep('');
-        setEndereco({} as IEndereco);
-        handleTaxa({} as IEndereco, -1);
-        setIsReadOnly(false);
-    }
-    function getTaxaEntrega(lat: number, lng: number) {
+    function getTaxaEntrega() {
+        if(!cep && cep.length != 8){
+            toast.error(`Cep invalido`);
+            return;
 
-        api.get(`/MenuDigital/CalculaFrete?empresa=${empresa}&latitude=${lat}&longitude=${lng}`)
+        }
+        api.get(`/MenuDigital/CalculaFrete?empresa=${empresa}&latitude=${endereco.latitude}&longitude=${endereco.longitude}`)
             .then((r) => {
                 setIsReadOnly(true);
-                setTaxa(r.data);
+                if(!r.data || r.data < 0){
+                    toast.error(`Erro ao gerar taxa de entrega`);
+                    return;
+                }
+                confirmEndereco(r.data);
             }).catch((err) => {
                 toast.error(err.response.data);
             });
     }
-    function confirmEndereco() {
+    function confirmEndereco(taxa) {
         if (cep === '') {
             toast.error('Cep invalido');
             return;
@@ -66,43 +55,84 @@ export default function Entrega({ handleTaxa, configuracao }: orderEntregaProps)
         handleTaxa(endereco, taxa);
     }
 
-    if(typeEntrega == ''){
-        return(
-            <div className={styles.container} style={{display:'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                <CustomButton style={{width: '40%'}} onClick={() => {
+    const handleSelectAddress = (a: IAddressSearchResult) => {
+        setEndereco({
+            altitude: 0,
+            longitude: Number(a.lon),
+            latitude: Number(a.lat),
+            bairro: a.address.suburb,
+            cidade: {
+                nome: a.address.city,
+                ddd: 0,
+                ibge: ''
+            },
+            complemento: '',
+            estado: {
+                sigla: "SP"
+            },
+            logradouro: a.address.road,
+            cep: undefined
+        })
+
+    }
+
+    if (typeEntrega == '') {
+        return (
+            <div className={styles.container} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                <CustomButton style={{ width: '40%' }} onClick={() => {
                     handleTaxa();
                 }} typeButton={'outline'}>Balcão</CustomButton>
-                <CustomButton  disabled={!configuracao?.aberto || !configuracao?.entrega} style={{width: '40%'}}  onClick={() => {
+                <CustomButton disabled={!configuracao?.aberto || !configuracao?.entrega} style={{ width: '40%' }} onClick={() => {
                     setTypeEntrega('ENTREGA');
                 }} typeButton={'primary'}>Entregar</CustomButton>
 
             </div>
         )
     }
-    return (
-        <div className={styles.container}>
-            <div className={styles.containerFlex}>
-                <InputFormMask readOnly={isReadOnly} value={cep} onChange={(e) => { setCep(e.target.value); }} mask={"99999-999"} placeholder='_____-___' className={styles.input} title={'CEP'} />
-                {!isReadOnly ?
-                    (<a className={styles.search} onClick={searchCep}><FontAwesomeIcon icon={faSearch} /></a>) :
-                    (<a className={styles.search} onClick={cleanCep}><FontAwesomeIcon icon={faRefresh} /></a>)
-                }
+
+    if (!endereco.logradouro) {
+        return (
+            <div className={styles.container}>
+                <AddressSearch handleSelectAddress={handleSelectAddress} />
             </div>
-            <div hidden={endereco.latitude === 0 || endereco.latitude === undefined}>
-                <InputGroup value={endereco.logradouro} title={'Logradouro'} onChange={(e) => { setEndereco({ ...endereco, logradouro: e.target.value }) }} />
-                <div className={styles.containerFlex}>
-                    <InputGroup width={'50%'} title={'Numero'} onChange={(e) => { setEndereco({ ...endereco, numero: e.target.value }) }} ref={nroRef} value={endereco.numero} placeholder='Numero' className={styles.input} />
-                    <InputGroup width={'50%'} title={'Complemento'} onChange={(e) => { setEndereco({ ...endereco, complemento: e.target.value }) }} value={endereco.compl} placeholder='Complemento' className={styles.input} />
-                </div>
-                <div className={styles.containerFlex}>
-                    <InputGroup width={'50%'} title={'Bairro'}  onChange={(e) => { setEndereco({ ...endereco, bairro: e.target.value }) }} readOnly={isReadOnly} value={endereco.bairro} placeholder='Bairro' className={styles.input} />
-                    <InputGroup width={'50%'} title={'Cidade'} readOnly={isReadOnly} value={endereco.cidade?.nome} placeholder='Cidade' className={styles.input} />
-                </div>
-                <br />
-                <div className={styles.containerFlex}>
-                    <CustomButton style={{ width: '100%' }} typeButton={'primary'} onClick={confirmEndereco} >Confirmar Endereco</CustomButton>
-                </div>
+        )
+    }
+    if (!endereco.cep) {
+        return <div className={styles.container}>
+            <InputGroup readOnly={true} width={'100%'} title={'Logradouro'} value={endereco.logradouro} placeholder='Logradouro' className={styles.input} />
+            <div className={styles.containerFlex}>
+                <InputFormMask width={'25%'} readOnly={isReadOnly} value={cep} onChange={(e) => { setCep(e.target.value); }} mask={"99999-999"} placeholder='_____-___' className={styles.input} title={'Agora informe o CEP'} />
+                <InputGroup width={'25%'} title={'Numero'} onChange={(e) => { setEndereco({ ...endereco, numero: e.target.value }) }} ref={nroRef} value={endereco.numero} placeholder='Numero' className={styles.input} />
+                <InputGroup width={'25%'} title={'Complemento'} onChange={(e) => { setEndereco({ ...endereco, complemento: e.target.value }) }} value={endereco.compl} placeholder='Complemento' className={styles.input} />
+                <CustomButton style={{height: 30, marginTop: 22}} typeButton={'primary'} onClick={getTaxaEntrega}>Calcular Frete</CustomButton>
             </div>
         </div>
-    )
+    } 
+
+    // return (
+    //     <div className={styles.container}>
+    //         <div className={styles.containerFlex}>
+    //             <InputFormMask readOnly={isReadOnly} value={cep} onChange={(e) => { setCep(e.target.value); }} mask={"99999-999"} placeholder='_____-___' className={styles.input} title={'CEP'} />
+    //             {!isReadOnly ?
+    //                 (<a className={styles.search} onClick={searchCep}><FontAwesomeIcon icon={faSearch} /></a>) :
+    //                 (<a className={styles.search} onClick={cleanCep}><FontAwesomeIcon icon={faRefresh} /></a>)
+    //             }
+    //         </div>
+    //         <div hidden={endereco.latitude === 0 || endereco.latitude === undefined}>
+    //             <InputGroup value={endereco.logradouro} title={'Logradouro'} onChange={(e) => { setEndereco({ ...endereco, logradouro: e.target.value }) }} />
+    //             <div className={styles.containerFlex}>
+    //                 <InputGroup width={'50%'} title={'Numero'} onChange={(e) => { setEndereco({ ...endereco, numero: e.target.value }) }} ref={nroRef} value={endereco.numero} placeholder='Numero' className={styles.input} />
+    //                 <InputGroup width={'50%'} title={'Complemento'} onChange={(e) => { setEndereco({ ...endereco, complemento: e.target.value }) }} value={endereco.compl} placeholder='Complemento' className={styles.input} />
+    //             </div>
+    //             <div className={styles.containerFlex}>
+    //                 <InputGroup width={'50%'} title={'Bairro'} onChange={(e) => { setEndereco({ ...endereco, bairro: e.target.value }) }} readOnly={isReadOnly} value={endereco.bairro} placeholder='Bairro' className={styles.input} />
+    //                 <InputGroup width={'50%'} title={'Cidade'} readOnly={isReadOnly} value={endereco.cidade?.nome} placeholder='Cidade' className={styles.input} />
+    //             </div>
+    //             <br />
+    //             <div className={styles.containerFlex}>
+    //                 <CustomButton style={{ width: '100%' }} typeButton={'primary'} onClick={confirmEndereco} >Confirmar Endereco</CustomButton>
+    //             </div>
+    //         </div>
+    //     </div>
+    // )
 }

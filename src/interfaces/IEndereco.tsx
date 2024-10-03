@@ -2,14 +2,14 @@ export default interface IEndereco{
     altitude: number;
     latitude: number;
     longitude: number;
-    bairro: string;
-    cep: string;
-    cidade: ICidade;
-    complemento: string;
-    estado: IEstado;
-    logradouro: string;
-    numero: string;
-    compl: string
+    bairro?: string;
+    cep?: string;
+    cidade?: ICidade;
+    complemento?: string;
+    estado?: IEstado;
+    logradouro?: string;
+    numero?: string;
+    compl?: string
 
 }
 

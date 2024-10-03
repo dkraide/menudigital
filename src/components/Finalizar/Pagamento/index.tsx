@@ -73,7 +73,7 @@ export default function Pagamento({ order }: pagamentoProps) {
                         </tr>
                         <tr>
                             <td>Tipo</td>
-                            <td>{order.isParaEntrega ? 'Par entregar' : 'Retira no balcão'}</td>
+                            <td>{order.isParaEntrega ? 'Para entregar' : 'Retira no balcão'}</td>
                         </tr>
                         {order.isParaEntrega && <>
                             <tr>

@@ -24,6 +24,7 @@
 .containerFlex{
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 .input{
     width: 100%;
