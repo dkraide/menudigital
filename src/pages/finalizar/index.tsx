@@ -13,6 +13,7 @@ import Entrega from '@/components/Finalizar/Entrega';
 import Pagamento from '@/components/Finalizar/Pagamento';
 import IConfiguracao from '@/interfaces/IConfiguracao';
 import { api } from '@/services/api';
+import { AxiosResponse } from 'axios';
 
 export default function Finalizar() {
     const [user, setUser] = useState<IUser>({} as IUser);
@@ -36,7 +37,7 @@ export default function Finalizar() {
             var empresa =  sessionStorage.getItem('empresa') || '';
             await api
             .get(`/MenuDigital/Configuracao?id=${empresa}&withHorarios=true`)
-            .then((r) => {
+            .then((r: AxiosResponse<IConfiguracao>) => {
                 setConfiguracao(r.data);
             }).catch((r) => {
             });

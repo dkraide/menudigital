@@ -9,7 +9,8 @@ import { toast } from 'react-toastify';
 import CustomButton from '@/components/CustomButton';
 import { InputFormMask, InputGroup } from '@/components/CustomInput';
 import IConfiguracao from '@/interfaces/IConfiguracao';
-import { AddressSearch, IAddressSearchResult } from '@/components/AddressSearch';
+import { AddressSearch, IAddress } from '@/components/AddressSearch';
+import { fGetNumber, fGetOnlyNumber } from '@/utils/functions';
 
 type orderEntregaProps = {
     handleTaxa: (endereco?: IEndereco, taxa?: number) => void;
@@ -17,7 +18,6 @@ type orderEntregaProps = {
 }
 
 export default function Entrega({ handleTaxa, configuracao }: orderEntregaProps) {
-    const [cep, setCep] = useState('');
     const [isReadOnly, setIsReadOnly] = useState(false);
     const nroRef = useRef<HTMLInputElement>(null);
     const [endereco, setEndereco] = useState<IEndereco>({} as IEndereco);
@@ -27,7 +27,8 @@ export default function Entrega({ handleTaxa, configuracao }: orderEntregaProps)
         setEmpresa(sessionStorage.getItem('empresa') || '');
     }, []);
     function getTaxaEntrega() {
-        if(!cep && cep.length != 8){
+        const cep = fGetOnlyNumber(endereco.cep);
+        if (!cep && cep.length != 8) {
             toast.error(`Cep invalido`);
             return;
 
@@ -35,7 +36,7 @@ export default function Entrega({ handleTaxa, configuracao }: orderEntregaProps)
         api.get(`/MenuDigital/CalculaFrete?empresa=${empresa}&latitude=${endereco.latitude}&longitude=${endereco.longitude}`)
             .then((r) => {
                 setIsReadOnly(true);
-                if(!r.data || r.data < 0){
+                if (!r.data || r.data < 0) {
                     toast.error(`Erro ao gerar taxa de entrega`);
                     return;
                 }
@@ -45,33 +46,34 @@ export default function Entrega({ handleTaxa, configuracao }: orderEntregaProps)
             });
     }
     function confirmEndereco(taxa) {
-        if (cep === '') {
-            toast.error('Cep invalido');
+        const cep = fGetOnlyNumber(endereco.cep);
+        if (!cep && cep.length != 8) {
+            toast.error(`Cep invalido`);
             return;
-        } else if (endereco.numero === '' || endereco.numero === undefined || endereco.numero === null) {
+        }else if (endereco.numero === '' || endereco.numero === undefined || endereco.numero === null) {
             toast.error('Numero invalido');
             return;
         }
         handleTaxa(endereco, taxa);
     }
 
-    const handleSelectAddress = (a: IAddressSearchResult) => {
+    const handleSelectAddress = (a: IAddress) => {
         setEndereco({
             altitude: 0,
-            longitude: Number(a.lon),
+            longitude: Number(a.lng),
             latitude: Number(a.lat),
-            bairro: a.address.suburb,
+            bairro: a.district,
             cidade: {
-                nome: a.address.city,
-                ddd: 0,
-                ibge: ''
+                nome: a.city,
+                ddd: fGetNumber(a.ddd),
+                ibge: a.cityIbge
             },
             complemento: '',
             estado: {
                 sigla: "SP"
             },
-            logradouro: a.address.road,
-            cep: undefined
+            logradouro: a.address,
+            cep: a.cep
         })
 
     }
@@ -97,17 +99,17 @@ export default function Entrega({ handleTaxa, configuracao }: orderEntregaProps)
             </div>
         )
     }
-    if (!endereco.cep) {
-        return <div className={styles.container}>
+    return (
+        <div className={styles.container}>
             <InputGroup readOnly={true} width={'100%'} title={'Logradouro'} value={endereco.logradouro} placeholder='Logradouro' className={styles.input} />
             <div className={styles.containerFlex}>
-                <InputFormMask width={'25%'} readOnly={isReadOnly} value={cep} onChange={(e) => { setCep(e.target.value); }} mask={"99999-999"} placeholder='_____-___' className={styles.input} title={'Agora informe o CEP'} />
+                <InputFormMask width={'25%'} readOnly={true} value={endereco?.cep} mask={"99999-999"} placeholder='_____-___' className={styles.input} title={'Agora informe o CEP'} />
                 <InputGroup width={'25%'} title={'Numero'} onChange={(e) => { setEndereco({ ...endereco, numero: e.target.value }) }} ref={nroRef} value={endereco.numero} placeholder='Numero' className={styles.input} />
                 <InputGroup width={'25%'} title={'Complemento'} onChange={(e) => { setEndereco({ ...endereco, complemento: e.target.value }) }} value={endereco.compl} placeholder='Complemento' className={styles.input} />
-                <CustomButton style={{height: 30, marginTop: 22}} typeButton={'primary'} onClick={getTaxaEntrega}>Calcular Frete</CustomButton>
+                <CustomButton style={{ height: 30, marginTop: 22 }} typeButton={'primary'} onClick={getTaxaEntrega}>Calcular Frete</CustomButton>
             </div>
         </div>
-    } 
+    )
 
     // return (
     //     <div className={styles.container}>
