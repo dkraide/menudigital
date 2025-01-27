@@ -22,7 +22,7 @@ export default function Produto() {
         var item = sessionStorage.getItem('empresa') || '';
         const params = new URLSearchParams(window.location.search);
         setEmpresa(item);
-        api.get(`/MenuDigital/produto?empresa=${item}&produtoId=${params.get('produtoId')}`)
+        api.get(`/MenuDigital/produto?empresa=${item}&produtoId=${params.get('produtoId')}&tamanhoId=${params.get('tamanhoId')}`)
             .then((r) => {
                 setProduto(r.data);
             }).catch((err) => {

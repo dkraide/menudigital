@@ -9,6 +9,11 @@ export default function OrderProduto(pr: IOrderProduto){
             <div className={styles.promoDesc}>
                 <p className={styles.title}>{pr.nome}</p>
                 <p className={styles.desc}>{pr.descricao}</p>
+                {pr?.adicionais?.map((adicional) => {
+                    return(
+                        <p>{adicional.nome}</p>
+                    )
+                })}
                 <p className={styles.value}>{pr.quantidade.toFixed(2)} x R${pr.valorUn.toFixed(2)} = R${pr.valorTotal.toFixed(2)}</p>
             </div>
         </div>

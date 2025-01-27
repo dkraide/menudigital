@@ -11,6 +11,7 @@ type boxAdicionalProp = {
     changeQuantity: (type: string, indexGroup: number, index: number) => void;
 }
 export default function BoxAdicional({ grupo, changeQuantity, index }: boxAdicionalProp) {
+    console.log(grupo);
     function getTotal(): number {
         return _.sumBy(grupo.itens, e => e.quantidade);
     }
@@ -29,7 +30,6 @@ export default function BoxAdicional({ grupo, changeQuantity, index }: boxAdicio
             <div className={styles.header}>
                 <div className={styles.row}>
                     <b>{getText()}</b>
-                    <p>{grupo.min > 0 ? `Entre ${grupo.min} e ${grupo.max}` : `Até ${grupo.max}`} {grupo.max > 1 ? `opções` : `opção`}</p>
                 </div>
                 <p className={styles.selected}>Selecionado: {getTotal()}</p>
             </div>

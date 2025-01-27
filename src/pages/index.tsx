@@ -9,10 +9,7 @@ import Combo from '@/components/Combo';
 import Header from '@/components/Header';
 import Promocao from '@/components/Promocao';
 import IClasse from '@/interfaces/IClasse';
-import DividerLine from '@/components/DividerLine';
-import IClasseProduto from '@/interfaces/IClasseProduto';
 import BoxProd from '@/components/Produto/BoxProd';
-import Footer from '@/components/Footer';
 import SearchComponent from '@/components/Home/SearchComponent';
 
 export default function Home() {
