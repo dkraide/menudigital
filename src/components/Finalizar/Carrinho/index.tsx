@@ -11,27 +11,29 @@ import DividerLine from "@/components/DividerLine";
 
 
 type carrinhoProps = {
-    handleNext: (order) => void;
+    handleNext: (order: IOrder) => void;
+    handleRemoveProduct?: (index: number) => void;
+    order: IOrder;
 }
 
 export default function Carrinho({ handleNext }: carrinhoProps) {
     const [order, setOrder] = useState<IOrder>();
     useEffect(() => {
-        var obj = JSON.parse(sessionStorage.getItem('order') || '{}') as IOrder;
-        if (obj.promocoes === undefined) {
-            obj.promocoes = [];
-        }
-        if (obj.combos === undefined) {
-            obj.combos = [];
-        }
-        if (obj.produtos === undefined) {
-            obj.produtos = [];
-        }
-        var total = getTotal(obj);
-        obj.valorTotal = total;
-        obj.valorProdutos = total;
-        setOrder({ ...obj });
+        const storedOrder = sessionStorage.getItem('order');
+        if (!storedOrder) return;
+    
+        let obj = JSON.parse(storedOrder) as IOrder;
+    
+        if (!obj.promocoes) obj.promocoes = [];
+        if (!obj.combos) obj.combos = [];
+        if (!obj.produtos) obj.produtos = [];
+    
 
+        if (!_.isEqual(obj, order)) {
+            obj.valorTotal = getTotal(obj);
+            obj.valorProdutos = obj.valorTotal;
+            setOrder(obj);
+        }
     }, []);
     function getTotal(pedido: IOrder): number {
         var total = 0;
@@ -40,6 +42,22 @@ export default function Carrinho({ handleNext }: carrinhoProps) {
         total += _.sumBy(pedido?.produtos, p => p.valorTotal);
         return total;
     }
+
+    function handleRemoveProduct(index: number) {
+        if (!order) return;
+    
+        let updatedOrder = { ...order };
+        updatedOrder.produtos = updatedOrder.produtos.filter((_, i) => i !== index);
+    
+        updatedOrder.valorProdutos = updatedOrder.produtos.reduce((acc, produto) => acc + produto.valorTotal, 0);
+        updatedOrder.valorTotal = updatedOrder.valorProdutos - (updatedOrder.valorDesconto || 0) + (updatedOrder.valorFrete || 0);
+    
+        sessionStorage.setItem('order', JSON.stringify(updatedOrder));
+        setOrder(updatedOrder);
+    }
+    
+    
+    
     return (
         <div className={styles.container}>
             <div className={styles.containerCarrinho}>
@@ -48,7 +66,9 @@ export default function Carrinho({ handleNext }: carrinhoProps) {
                 {order?.combos?.length > 0 && <h4>Combos</h4>}
                 {order?.combos.map((p) => <OrderCombo key={p.combo.idCombo} p={p} />)}
                 {order?.produtos?.length > 0 && <h4>Produtos</h4>}
-                {order?.produtos.map((p) => <OrderProduto key={p.id} {...p} />)}
+                {order?.produtos.map((p, index) => (
+                <OrderProduto key={`${p.id}-${index}`} {...p} onRemove={() => handleRemoveProduct(index)} />
+                ))}
             </div>
             <DividerLine/>
             <div className={styles.containerTotal}>
