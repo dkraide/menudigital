@@ -159,7 +159,7 @@ export default function Produto() {
             <Header />
             <div className={styles.containerPromo}>
                 <div className={styles.divImage}>
-                    <img className={styles.img} src={produto.imagem} alt='imagem do prdouto' />
+                    <img className={styles.img} src={produto.imagem} alt='imagem do produto' />
                 </div>
                 <p className={styles.nomeProduto} >{produto.nome}</p>
                 <p className={styles.descricao}>{produto.descricao}</p>

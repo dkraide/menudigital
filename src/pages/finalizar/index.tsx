@@ -83,12 +83,14 @@ export default function Finalizar() {
     function handleCarrinho(pedido){
         setOrder(pedido);
         setStep(1);
+        
     }
 
     const renderItem = () => {
+        
         switch (step) {
             case 0:
-                return <Carrinho handleNext={handleCarrinho} />;
+                return <Carrinho handleNext={handleCarrinho} order={order} />;
             case 1:
                 return <Entrar handleUser={handleUser} />
             case 2:
@@ -108,6 +110,8 @@ export default function Finalizar() {
         )
 
     }
+
+
     return (
         <div className={styles.container}>
             <Header />
