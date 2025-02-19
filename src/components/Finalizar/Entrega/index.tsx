@@ -36,7 +36,7 @@ export default function Entrega({ handleTaxa, configuracao }: orderEntregaProps)
         api.get(`/MenuDigital/CalculaFrete?empresa=${empresa}&latitude=${endereco.latitude}&longitude=${endereco.longitude}`)
             .then((r) => {
                 setIsReadOnly(true);
-                if (!r.data || r.data < 0) {
+                if (isNaN(r.data) || r.data < 0) {
                     toast.error(`Erro ao gerar taxa de entrega`);
                     return;
                 }
