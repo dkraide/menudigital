@@ -1,69 +1,120 @@
-.container{
- width: 100%;
- height: 100px;
- display: flex;
- flex-direction: row;
- margin-bottom: 10px;
-}
-.img{
-    width: 100px;
-    height: 100px;
-    border-width: 2px;
-    border-style: solid;
-    border-color: var(--blue);
-    border-radius: 6px 6px 0px 6px;
-}
-.info{
-    height: 100px;
-    border-bottom: solid 2px;
-    border-color: var(--blue);
-    width: 100%;
-    padding-left: 5px;
-    display: flex;
-    flex-flow: column;
-    height: 100%;
-}
-.title{
-    color: var(--blue);
-    font-weight: bold;
-    font-size: 16px;
-}
-.descricao{
-    flex: 1;
-}
-.input{
-  border: none;
-  width: 50px;
-  text-align: center;
-  background-color: var(--blue);
-  color: white;
-  font-weight: bold;
-  font-size: 16px;
-}
-.icon{
-    width: 25px;
-    color: var(--blue);
-    transition: all 0.15s;
-    &:active{
-        color: white;
-        background-color: var(--blue);
-    }
-    cursor: pointer;
-}
-.containerAdd{
-    width: 100%;
-    bottom: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-    margin-bottom: 2px;
-}
-.add{
-    border: 2pt solid;
-    border-color: var(--blue);
-    width: 100px;
+.container {
     display: flex;
     flex-direction: row;
-    border-radius: 10px;
-    justify-content: flex-end;
+    width: 100%;
+    flex-wrap: wrap;
+    background-color: var(--white);
+    padding: 20px 10px;
+    margin-bottom: 10px;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    cursor: pointer;
+}
+
+.containerInfo {
+    flex-direction: column;
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+    cursor: pointer;
+}
+
+.pic {
+    max-width: 120px;
+    max-height: 120px;
+    border-radius: 8px;
+}
+
+.lblValue {
+    padding-right: 5px;
+    cursor: pointer;
+}
+
+.lblValueOriginal {
+    padding-right: 5px;
+    text-decoration: line-through;
+    font-style: italic;
+    cursor: pointer;
+}
+
+.lblTitle,
+.lblValue {
+    font-size: var(--subTitle);
+    font-weight: 500;
+    cursor: pointer;
+
+}
+
+.lblDesc {
+    cursor: pointer;
+}
+
+
+.containerGroup {
+    background-color: var(--white);
+    padding: 20px 10px;
+
+    h5{
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        font-size: 20px;
+        font-weight: 500;
+    }
+
+    .titleGroup{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+
+        .groupTitle{
+            font-weight: 400;
+            font-size: 16px;
+        }
+        .title{
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--main);
+        }
+    }
+}
+.containerButtons{
+    width: 100%;
+    max-width: 100px;
+    background-color: var(--main);
+    border-radius: 4px;
+    color: white;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 12px;
+    input{
+        width: 40%;
+        background-color: var(--main);
+        border: none;
+        text-align: center;
+        color: white;
+        max-width: 30px;
+    }
+}
+.icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    cursor: pointer;
+    height: 100%;
+    width: 30%;
+    transition: all 0.3s;
+    overflow: hidden;
+}
+.icon:active{
+    background-color: var(--main-light);
+    -webkit-tap-highlight-color: transparent;
 }

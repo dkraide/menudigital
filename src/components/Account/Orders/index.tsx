@@ -1,12 +1,12 @@
 import IUser from '@/interfaces/IUser';
 import styles from './styles.module.scss';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { IPedidoOnline } from '@/interfaces/IPedidoOnline';
 import { api } from '@/services/api';
-import { getEmpresa } from '@/utils/functions';
 import { toast } from 'react-toastify';
 import { format } from 'date-fns';
 import DividerLine from '@/components/DividerLine';
+import { AuthContext } from '@/contexts/AuthContexto';
 
 type props = {
     user: IUser
@@ -14,12 +14,16 @@ type props = {
 
 export default function Orders({ user }: props) {
 
-    const [orders, setOrders] = useState<IPedidoOnline[]>([])
+    const [orders, setOrders] = useState<IPedidoOnline[]>([]);
+    const {getEmpresaId} = useContext(AuthContext);
 
     useEffect(() => {
+        if(!user){
+            return;
+        }
         const loadOrders = async () => {
-            const empresa = getEmpresa();
-            await api.get(`/PedidoOnline/Pedidos?empresa=${empresa}&telefone=${user.phone}`)
+            const empresa = await getEmpresaId();
+            await api.get(`/PedidoOnline/Pedidos?empresa=${empresa}&telefone=${user.telefone}`)
                 .then(({ data }) => {
                     setOrders(data);
                 }).catch((err) => {
@@ -52,8 +56,6 @@ export default function Orders({ user }: props) {
             </> : <>
                 <h3>Sem historico para esse estabelecimento.</h3>
             </>}
-
-
         </div>
     )
 

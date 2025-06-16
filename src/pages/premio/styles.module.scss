@@ -1,0 +1,116 @@
+.containerCenter {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow: auto;
+    background-color: var(--gray-100);
+    min-height: 100%;
+}
+.divImage {
+    height: 250px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.img {
+    width: 300px;
+    height: 250px;
+    border-radius: 5px;
+}
+
+.nomeProduto {
+    font-size: 16px;
+    font-weight: 600;
+    font-style: normal;
+    width: 100%;
+}
+
+.descricao {
+    font-size: 15px;
+    font-weight: 400;
+    font-style: normal;
+    width: 100%;
+}
+
+.preco {
+    margin-top: 5px;
+    font-size: 15px;
+    font-weight: 500;
+    color: rgb(144, 142, 142);
+    width: 100%;
+}
+
+.title {
+    margin: 0 auto;
+    max-width: 205px;
+    text-align: center;
+    border-radius: 8px 8px 0px 0px;
+    font-weight: bold;
+    padding: 2px;
+}
+
+.containerPromo {
+    margin-top: 10px;
+    max-width: 90%;
+    border-radius: 5px;
+    padding: 5px;
+    width: 930px;
+    text-align: center;
+    background-color: var(--white);
+    h5 {
+        text-align: center;
+        font-style: italic;
+        font-weight: normal;
+        font-size: 13px;
+    }
+}
+.container{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    flex-wrap: wrap;
+    background-color: var(--white);
+    padding: 20px  10px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    &:hover{
+        text-decoration: none;
+        cursor: pointer;
+    }
+    cursor: pointer;
+}
+.containerInfo{
+    flex-direction: column;
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+    cursor: pointer;
+}
+.pic{
+    max-width: 120px;
+    max-height: 120px;
+    border-radius: 8px;
+}
+.lblValue{
+    padding-right: 5px;
+    cursor: pointer;
+}
+.lblValueOriginal{
+    padding-right: 5px;
+    text-decoration:line-through;
+    font-style: italic;
+    cursor: pointer;
+}
+.lblTitle, .lblValue{
+    font-size: var(--subTitle);
+    font-weight: 500;
+    cursor: pointer;
+    
+}
+.lblDesc{
+    cursor: pointer;
+}

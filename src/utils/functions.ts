@@ -1,8 +1,5 @@
 import { IOrder, IOrderProduto } from "@/interfaces/IOrder";
 import { IPedidoOnline, IPedidoOnlineProduto, IPedidoOnlineProdutoAdicional } from "@/interfaces/IPedidoOnline";
-import IUser from "@/interfaces/IUser";
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { toast } from "react-toastify";
 
 
 
@@ -96,22 +93,4 @@ function buildProduto(base: IOrderProduto, obs: string): IPedidoOnlineProduto {
         });
     }
     return x;
-}
-
-export function getUser(): IUser | undefined{
-    var strUser = sessionStorage.getItem('user');
-    var u = JSON.parse(strUser || '{}');
-    if (u.name !== undefined) {
-        return u;
-    }
-    return undefined;
-
-}
-export function login(user):boolean{
-    sessionStorage.setItem('user', JSON.stringify(user));
-    return true;
-}
-
-export function getEmpresa(): string{
-    return sessionStorage.getItem('empresa') || '';
 }

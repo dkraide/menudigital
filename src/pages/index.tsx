@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import styles from '../../styles/home.module.scss';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { api } from '@/services/api';
 import ICombo from '@/interfaces/ICombo';
@@ -11,6 +11,7 @@ import Promocao from '@/components/Promocao';
 import IClasse from '@/interfaces/IClasse';
 import BoxProd from '@/components/Produto/BoxProd';
 import SearchComponent from '@/components/Home/SearchComponent';
+import { AuthContext } from '@/contexts/AuthContexto';
 
 export default function Home() {
 
@@ -18,12 +19,13 @@ export default function Home() {
   const [promocoes, setPromocoes] = useState<IPromocao[]>([]);
   const [classes, setClasses] = useState<IClasse[]>([]);
   const [search, setSearch] = useState('');
-
+  const {setEmpresaId} = useContext(AuthContext);
   useEffect(() => {
 
     const params = new URLSearchParams(window.location.search);
     var item = params.get('empresa') || '';
     if (item.length > 0) {
+      setEmpresaId(Number(item));
       sessionStorage.setItem('empresa', item);
       window.location.href = '/';
     } else {
@@ -129,7 +131,7 @@ export default function Home() {
         )}
         {promocoes.length > 0 ? (
           <>
-            <div className={styles.title} id="promocoes">Promocoes</div>
+            <div className={styles.title} id="promocoes">Promoções</div>
             <div className={styles.containerCombos}>
               {promocoes.map(c => {
                 if (!c.descricao.toUpperCase().includes(search.toUpperCase())) {

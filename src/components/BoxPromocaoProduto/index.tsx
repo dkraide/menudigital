@@ -11,7 +11,36 @@ type boxProps = {
 }
 
 export default function BoxPromocaoProduto({ produto, handleChange, index }: boxProps) {
-  
+
+    return (
+        <div className={styles.container}>
+            <div className={styles.containerInfo} >
+                <label className={styles.lblTitle}>{produto.nome}</label>
+                <div className={styles.containerAdd}>
+                    <div className={styles.containerButtons}>
+                        <div className={styles.icon}>
+                            <FontAwesomeIcon onClick={() => { handleChange('-', index) }} icon={faMinus} />
+                        </div>
+                        <input readOnly value={produto.quantidade} />
+                        <div className={styles.icon}>
+                            <FontAwesomeIcon onClick={() => { handleChange('+', index) }} icon={faPlus} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style={{ width: '40%', display: 'flex', justifyContent: 'flex-end', paddingRight: '10px' }}>
+                <img
+                    src={produto.imagem || '/comida.png'}
+                    className={styles.pic}
+                    onError={(e) => { e.currentTarget.src = '/comida.png' }}
+                    alt={'produto'}
+                    width={100}
+                    height={100}>
+                </img>
+            </div>
+        </div>
+    )
+
     return (
         <div className={styles.container}>
             <img className={styles.img} src={produto.imagem} />
@@ -21,9 +50,9 @@ export default function BoxPromocaoProduto({ produto, handleChange, index }: box
                 <div className={styles.containerAdd}>
                     <p className={styles.title}>R${produto.valor.toFixed(2)}</p>
                     <div className={styles.add}>
-                        <FontAwesomeIcon className={styles.icon} icon={faMinus} size={'xl'} onClick={() => {handleChange('-', index)}} />
+                        <FontAwesomeIcon className={styles.icon} icon={faMinus} size={'xl'} onClick={() => { handleChange('-', index) }} />
                         <input value={produto.quantidade} readOnly className={styles.input} />
-                        <FontAwesomeIcon className={styles.icon} icon={faPlus} size={'xl'} onClick={() => {handleChange('+', index)}} />
+                        <FontAwesomeIcon className={styles.icon} icon={faPlus} size={'xl'} onClick={() => { handleChange('+', index) }} />
                     </div>
                 </div>
             </div>

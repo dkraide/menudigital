@@ -1,4 +1,5 @@
 export default interface IPromocao{
+    id:number
     idPromocao: number;
     valorOriginal: number;
     valorFinal: number;

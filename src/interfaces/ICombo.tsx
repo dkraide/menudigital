@@ -1,4 +1,5 @@
 export default interface ICombo{
+    id: number
     idCombo: number;
     descricao: string;
     itens: ComboItem[];
@@ -20,4 +21,5 @@ export interface IComboProduto{
     idProduto: number;
     imagem:string;
     quantidade: number;
+    unidadeMedida?: string;
 }

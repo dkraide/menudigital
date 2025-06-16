@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { Roboto } from 'next/font/google';
 import Footer from '@/components/Footer';
+import { AuthProvider } from '@/contexts/AuthContexto';
 
 const roboto = Roboto({
   weight: '400',
@@ -14,12 +15,14 @@ const roboto = Roboto({
 
 export default function App({ Component, pageProps }: any) {
   return (
-    <div style={{ width: '100%', display:'flex', justifyContent: 'center', height: '100vh' }}>
-      <div style={{maxWidth: '930px', flex:1, height: '100%', width: '100%'}}>
-        <Component className={roboto} {...pageProps} />
-        <Footer />
+    <AuthProvider>
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'center', height: '100vh' }}>
+        <div style={{ maxWidth: '930px', flex: 1, height: '100%', width: '100%' }}>
+          <Component className={roboto} {...pageProps} />
+          <Footer />
+        </div>
+        <ToastContainer autoClose={3000} />
       </div>
-      <ToastContainer autoClose={3000} />
-    </div>
+    </AuthProvider>
   );
 }

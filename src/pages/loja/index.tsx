@@ -3,23 +3,25 @@ import styles from './styles.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMailBulk, faMapPin, faPhone, faShop } from '@fortawesome/free-solid-svg-icons';
 import { api } from '@/services/api';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import IEmpresa from '@/interfaces/IEmpresa';
 import IConfiguracao from '@/interfaces/IConfiguracao';
-import { fGetOnlyNumber, getEmpresa } from '@/utils/functions';
+import { fGetOnlyNumber } from '@/utils/functions';
 import { faFacebook, faInstagram, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import { AuthContext } from '@/contexts/AuthContexto';
 
 export default function Loja() {
 
     const [empresa, setEmpresa] = useState<IEmpresa>();
     const [hiddenHorario, setHiddenHorario] = useState(true);
     const [config, setConfig] = useState<IConfiguracao>();
+    const {getEmpresaId} = useContext(AuthContext)
 
     useEffect(() => {
-        var e = getEmpresa();
-        loadConfig(e);
+        loadConfig();
     }, [])
-    function loadConfig(empr: string) {
+    async function loadConfig() {
+        let empr = await getEmpresaId();
         api
             .get(`/MenuDigital/Empresa/${empr}`)
             .then((r) => {

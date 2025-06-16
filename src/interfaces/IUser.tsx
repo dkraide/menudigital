@@ -1,4 +1,6 @@
 export default interface IUser{
-    name: string;
-    phone: string;
+    id: number;
+    nome: string;
+    telefone: string;
+    pontos: number
 }

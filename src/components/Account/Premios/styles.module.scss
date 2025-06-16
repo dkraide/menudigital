@@ -1,0 +1,86 @@
+.premio {
+    display: flex;
+    flex-direction: column;
+    height: 120px;
+    width: 100px;
+    margin: 5px;
+    transition: filter 0.3s;
+    user-select: none;
+    * {
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    &:active {
+        filter: brightness(1.1);
+    }
+
+    .imagemWrapper {
+        position: relative;
+        width: 100px;
+        height: 100px;
+
+        img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 5px; // opcional para deixar a imagem mais bonita
+        }
+
+        .pontos {
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            font-size: 12px;
+            width: fit-content;
+            padding: 2px 5px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); // opcional
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(128, 128, 128, 0.5); // cinza semi-transparente
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            z-index: 1;
+
+            span {
+                text-shadow:
+                    -1px -1px 0 #3b3b3b,
+                    1px -1px 0 #3b3b3b,
+                    -1px 1px 0 #3b3b3b,
+                    1px 1px 0 #3b3b3b;
+            }
+        }
+    }
+
+    .descricao {
+        font-size: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 4px;
+    }
+}
+
+.card {
+    h3 {
+        width: 100%;
+    }
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}

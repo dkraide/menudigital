@@ -1,29 +1,22 @@
 import Header from '@/components/Header';
 import styles from './styles.module.scss';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import IUser from '@/interfaces/IUser';
-import { getUser, login } from '@/utils/functions';
 import Entrar from '@/components/Finalizar/Entrar';
 import Welcome from '@/components/Account/Welcome';
 import DividerLine from '@/components/DividerLine';
 import Orders from '@/components/Account/Orders';
+import { AuthContext } from '@/contexts/AuthContexto';
+import Premios from '@/components/Account/Premios';
 
 
 export default function Account() {
 
-    const [user, setUser] = useState<IUser>();
-
-    useEffect(() => {
-        var u = getUser();
-        if (u) {
-            setUser(u);
-        }
-    }, []);
+    const { user, signIn } = useContext(AuthContext);
 
     const handleUser = (user, isLogged) => {
-        if(isLogged){
-            login(user);
-            setUser(user);
+        if (isLogged) {
+            signIn(user);
         }
     }
 
@@ -32,12 +25,13 @@ export default function Account() {
         <div className={styles.container}>
             <Header />
             {!!user ? <>
-            <Welcome user={user}/>
-            <DividerLine/>
-            <Orders user={user}/>
-              
+                <Welcome user={user} />
+                <DividerLine />
+                <Premios/>
+                <Orders user={user} />
+
             </> : <>
-              <Entrar handleUser={handleUser}/>
+                <Entrar handleUser={handleUser} />
             </>}
 
 

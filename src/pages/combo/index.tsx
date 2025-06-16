@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
 export default function Combo() {
-    const [combo, setCombo] = useState<ICombo>({valor: 0} as ICombo);
+    const [combo, setCombo] = useState<ICombo>({ valor: 0 } as ICombo);
     const [empresaId, setEmpresa] = useState('');
     const [isLoading, setLoading] = useState(true);
 
@@ -68,19 +68,19 @@ export default function Combo() {
     function finished(): boolean {
         var fin = true;
         combo.itens?.map((i, index) => {
-            if(i.produtos != null){
+            if (i.produtos != null) {
                 var total = getQuantidade(index);
                 if (total !== i.quantidade) {
                     fin = false;
                 }
             }
-            
+
         })
         return fin;
     }
     function addCarrinho() {
         var order = JSON.parse(sessionStorage.getItem('order') || '{}') as IOrder;
-        if(!order.combos){
+        if (!order.combos) {
             order.combos = [];
         }
         var p = {} as IOrderCombo;
@@ -89,34 +89,34 @@ export default function Combo() {
         p.total = combo.valor;
         order.combos.push(p);
         sessionStorage.setItem('order', JSON.stringify(order));
-        window.location.href= `/order`;
+        window.location.href = `/order`;
     }
-    function getProdutos(): IOrderProduto[]{
+    function getProdutos(): IOrderProduto[] {
         var prods = [] as IOrderProduto[];
         combo.itens.map((p) => {
-           if(p.produtos != null){
+            if (p.produtos != null) {
                 p.produtos.map((i) => {
-                    if(i.quantidade > 0){
+                    if (i.quantidade > 0) {
                         prods.push({
                             id: i.idProduto,
                             nome: i.nome,
-                            imagem:i.imagem,
+                            imagem: i.imagem,
                             valorUn: p.valorUnitario,
                             quantidade: i.quantidade,
                             valorTotal: p.valorUnitario * i.quantidade
-                          } as IOrderProduto);
+                        } as IOrderProduto);
                     }
                 });
-           }else{
-             prods.push({
-               id: p.produto.idProduto,
-               nome: p.produto.nome,
-               imagem: p.produto.imagem,
-               valorUn: p.valorUnitario,
-               quantidade: p.quantidade,
-               valorTotal: p.valorUnitario * p.quantidade
-             } as IOrderProduto);
-           }
+            } else {
+                prods.push({
+                    id: p.produto.idProduto,
+                    nome: p.produto.nome,
+                    imagem: p.produto.imagem,
+                    valorUn: p.valorUnitario,
+                    quantidade: p.quantidade,
+                    valorTotal: p.valorUnitario * p.quantidade
+                } as IOrderProduto);
+            }
         });
 
         return prods
@@ -124,26 +124,28 @@ export default function Combo() {
     return (
         <div className={styles.containerCenter}>
             <Header />
-            <div className={styles.containerCombo}>
-                <p className={styles.title}>Combo</p>
+            <div className={styles.containerPromo}>
                 <div className={styles.divImage}>
-                    <img className={styles.img} src={combo.imagem} alt='imagem da promocao' />
+                    <img className={styles.img}
+                        src={combo.imagem || '/comida.png'}
+                        onError={(e) => { e.currentTarget.src = '/comida.png' }}
+                        alt='imagem do combo' />
                 </div>
-                <div className={styles.descricao}>
-                    {combo.codigo} - R${combo.valor.toFixed(2)}
-                    <br />
-                    <p className={styles.descricao}>{combo.descricao}</p>
-                </div>
+                <p className={styles.nomeProduto} >{combo.codigo}</p>
+                <p className={styles.descricao}>{combo.descricao}</p>
+                <p className={styles.preco}>A partir de R$ {combo?.valor?.toFixed(2)}</p>
+            </div>
+            <div className={styles.containerCombo}>
                 {combo.itens?.map((p, index) => <BoxComboItem key={index.toString()} item={p} handleChange={changeQuantity} index={index} quantidade={getQuantidade(index)} />)}
             </div>
-            {finished() ? ( <div className={styles.containerCarrinho}>
+            {finished() ? (<div className={styles.containerCarrinho}>
                 <div>
                     <label className={styles.carrinhoDesc}>Por:</label>
                     <label className={styles.carrinhoVal}>R${getTotal().toFixed(2)}</label>
                 </div>
-                <FontAwesomeIcon onClick={addCarrinho} className={styles.icon} icon={faCartShopping} color='white' size={'2x'} />
+                <FontAwesomeIcon onClick={addCarrinho} className={styles.icon} icon={faCartShopping} color='var(--main)' size={'2x'} />
             </div>) :
-             (<></>)}
+                (<></>)}
 
         </div>
     )
