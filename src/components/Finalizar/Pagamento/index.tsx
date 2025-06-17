@@ -1,13 +1,14 @@
 import { IOrder } from '@/interfaces/IOrder';
 import styles from './styles.module.scss';
 import CustomButton from '@/components/CustomButton';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { InputGroup } from '@/components/CustomInput';
 import { toast } from 'react-toastify';
 import { createPedido, fGetNumber } from '@/utils/functions';
 import Loading from '@/components/Loading';
 import { api } from '@/services/api';
 import { AxiosError } from 'axios';
+import { AuthContext } from '@/contexts/AuthContexto';
 
 
 type pagamentoProps = {
@@ -19,6 +20,7 @@ export default function Pagamento({ order }: pagamentoProps) {
     const [forma, setForma] = useState<'DINHEIRO' | 'CREDITO' | 'DEBITO' | ''>('');
     const [troco, setTroco] = useState('');
     const [loading, setLoading] = useState(false);
+    const {getEmpresaId} = useContext(AuthContext);
 
 
     const handleSendPedido = async () => {
@@ -39,6 +41,7 @@ export default function Pagamento({ order }: pagamentoProps) {
 
         setLoading(true);
         var pedido = createPedido(order);
+        pedido.empresaId = await getEmpresaId();
         await api.post(`/PedidoOnline/CreateOrder`, pedido)
         .then(({data}) => {
             toast.success(`Pedido enviado com sucesso!`);

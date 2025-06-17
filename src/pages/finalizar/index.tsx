@@ -59,8 +59,8 @@ export default function Finalizar() {
     }
     function handleTaxa(address?: IEndereco, taxa?: number) {
 
-        order.cliente = user.name;
-        order.telefone = user.phone;
+        order.cliente = user.nome;
+        order.telefone = user.telefone;
         if (address) {
             order.bairro = address.bairro;
             order.cep = address.cep;

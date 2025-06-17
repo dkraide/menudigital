@@ -30,8 +30,8 @@ export default function OrderTotal({cliente, taxa, isEntrega, endereco }: orderT
 
 
     ord.isParaEntrega = isEntrega;
-    ord.cliente = cliente.name;
-    ord.telefone = cliente.phone;
+    ord.cliente = cliente.nome;
+    ord.telefone = cliente.telefone;
 
     if(isEntrega){
       ord.bairro = endereco.bairro;

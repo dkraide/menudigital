@@ -26,7 +26,7 @@ export default function User({ user, isLoggedIn, handleUser }: userProps) {
     if(isLoggedIn){
         return(
             <div style={{marginTop: '10px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                <h4>Bem vindo, {u?.name}</h4>
+                <h4>Bem vindo, {u?.nome}</h4>
                 <a className={styles.powerOff} onClick={() => { setUser(false) }}><FontAwesomeIcon icon={faPowerOff}/></a>
             </div>
         )
@@ -34,8 +34,8 @@ export default function User({ user, isLoggedIn, handleUser }: userProps) {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
             <div className={styles.container}>
-                <InputGroup value={u?.name || ''} onChange={(e) => { setU({ ...u as IUser, name: e.target.value }); }} readOnly={isLoggedIn} placeholder='Seu nome' title={'Nome'} />
-                <InputFormMask value={u?.phone || ''} onChange={(e) => { setU({ ...u as IUser, phone: e.target.value }); }} readOnly={isLoggedIn} mask="(99)99999-9999" placeholder='(__) _____-____' title={'Telefone'} />
+                <InputGroup value={u?.nome || ''} onChange={(e) => { setU({ ...u as IUser, nome: e.target.value }); }} readOnly={isLoggedIn} placeholder='Seu nome' title={'Nome'} />
+                <InputFormMask value={u?.telefone || ''} onChange={(e) => { setU({ ...u as IUser, telefone: e.target.value }); }} readOnly={isLoggedIn} mask="(99)99999-9999" placeholder='(__) _____-____' title={'Telefone'} />
             </div>
             {isLoggedIn ? (
                 <CustomButton typeButton={'outline'} onClick={() => { setUser(false) }}>Sair</CustomButton>
