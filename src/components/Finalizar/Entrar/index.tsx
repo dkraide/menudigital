@@ -10,16 +10,19 @@ import { toast } from 'react-toastify';
 import { fGetOnlyNumber } from '@/utils/functions';
 import { api } from '@/services/api';
 import { AuthContext } from '@/contexts/AuthContexto';
+import { AxiosError } from 'axios';
 
 type userProps = {
     handleUser: (user: IUser, isLogin: boolean) => void;
 }
 export default function Entrar({ handleUser }: userProps) {
     const [phone, setPhone] = useState('');
+    const [name, setName] = useState('');
     const { user } = useContext(AuthContext)
     const [codeSent, setCodeSent] = useState(false);
     const [code, setCode] = useState('');
     const { getEmpresaId } = useContext(AuthContext);
+    const [newUser, setNewUser] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -34,17 +37,36 @@ export default function Entrar({ handleUser }: userProps) {
             return;
         }
         const empresaId = await getEmpresaId();
-        try {
-            await api.post(`/menudigital/sendsms`, {
-                empresaId,
-                telefone: phoneNumber,
-            });
+        await api.post(`/menudigital/sendsms`, {
+            empresaId,
+            telefone: phoneNumber,
+        }).then((data) => {
             toast.success('Código enviado via SMS!');
             setCodeSent(true);
-        } catch (err) {
-            toast.error(`Erro ao gerar token`);
-        }
+        }).catch((err: AxiosError) => {
+            if (err.response?.status == 404) {
+                setNewUser(true);
+            } else {
+                toast.error(`Erro ao tentar enviar token.`);
+            }
+
+        });
     };
+    const handleCadastrar = async () => {
+        const empresaId = await getEmpresaId();
+        await api.post(`/MenuDigital/Clientes/${empresaId}`, {
+            empresaId: empresaId,
+            nome: name,
+            telefone: phone
+        }).then((data) => {
+            handleEntrar();
+            toast.success('Cadastrado com sucesso! Valide seu codigo agora');
+            setNewUser(false);
+        }).catch((err) => {
+            toast.error(`Erro ao cadastrar.`)
+        });
+
+    }
 
     const handleVerificarCodigo = async () => {
         const empresaId = await getEmpresaId();
@@ -69,10 +91,11 @@ export default function Entrar({ handleUser }: userProps) {
 
     return (
         <div className={styles.container}>
-            <h4 className={styles.title}>Entrar</h4>
+            <h4 className={styles.title}>{newUser ? 'Seja bem-vindo!' : 'Entrar'}</h4>
 
             <div hidden={codeSent} className={styles.inputGroup}>
                 <InputFormMask
+                   readOnly={newUser}
                     value={user?.telefone}
                     onChange={(e) => setPhone(e.target.value)}
                     mask="(99)99999-9999"
@@ -81,9 +104,28 @@ export default function Entrar({ handleUser }: userProps) {
                 />
             </div>
 
-            <CustomButton hidden={codeSent} typeButton="primary" onClick={handleEntrar}>
-                Enviar Código
+            <CustomButton disabled={codeSent || newUser} hidden={codeSent} typeButton="primary" onClick={handleEntrar}>
+                Entrar
             </CustomButton>
+
+            {newUser && (
+                <div className={styles.inputGroup}>
+                    <br />
+                    <div hidden={codeSent}>
+                        <InputGroup
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            title="Informe seu nome"
+                        />
+                    </div>
+
+                    <CustomButton typeButton="primary" onClick={handleCadastrar}>
+                        Cadastrar
+                    </CustomButton>
+                </div>
+            )}
+
+
 
             {codeSent && (
                 <>
@@ -104,3 +146,4 @@ export default function Entrar({ handleUser }: userProps) {
         </div>
     );
 }
+

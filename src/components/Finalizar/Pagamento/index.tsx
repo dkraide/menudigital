@@ -46,7 +46,7 @@ export default function Pagamento({ order }: pagamentoProps) {
         .then(({data}) => {
             toast.success(`Pedido enviado com sucesso!`);
             sessionStorage.setItem('order', '{}');
-            window.location.href = '/';
+            window.location.href = `/order?id=${data.id}&telefone=${data.telefone}`;
 
         }).catch((err: AxiosError) => {
             toast.error(`Erro ao enviar pedido. Tente novamente mais tarde`);

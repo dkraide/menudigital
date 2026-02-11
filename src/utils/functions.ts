@@ -88,7 +88,7 @@ function buildProduto(base: IOrderProduto, obs: string): IPedidoOnlineProduto {
             poa.quantidade = adc.quantidade;
             poa.valorUnitario = adc.valorUn;
             poa.valorTotal = adc.valorTotal;
-            poa.materiaPrimaId = adc.id;
+            poa.produtoGrupoItemId = adc.id;
             x.adicionais.push(poa);
         });
     }

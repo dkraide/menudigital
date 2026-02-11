@@ -42,5 +42,5 @@ export interface IPedidoOnlineProdutoAdicional{
     valorUnitario: number;
     quantidade: number;
     valorTotal: number;
-    materiaPrimaId: number;
+    produtoGrupoItemId: string;
 }

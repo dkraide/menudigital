@@ -36,7 +36,9 @@ export default function Orders({ user }: props) {
 
     const OrderItem = ({ order }: { order: IPedidoOnline }) => {
         return (
-            <div className={styles.order}>
+            <div onClick={() => {
+                window.location.href = `/order?id=${order.id}&telefone=${order.telefone}`
+            }} className={styles.order}>
                 <span className={styles.status}>{order.status}</span>
                 <span className={styles.status}>{format(new Date(order.dataPedido), 'dd/MM/yy HH:mm')}</span>
                 <span className={styles.status}>R$ {order.valorTotal.toFixed(2)}</span>

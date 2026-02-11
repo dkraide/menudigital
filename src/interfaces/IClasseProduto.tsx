@@ -48,7 +48,7 @@ export interface IGrupoAdicional{
     itens: IGrupoAdicionalProduto[]; 
 }
 export interface IGrupoAdicionalProduto{
-    id: number;
+    id: string;
     nome: string;
     valor: number;
     imagem: string

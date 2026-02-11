@@ -18,7 +18,7 @@ export default function Welcome({user} : props){
     return(
         <div className={styles.container}>
             <span className={styles.welcomeText}>Bem vindo(a), {user.nome}.</span>
-            <CustomButton onClick={handleLogOff} typeButton={'primary'}><FontAwesomeIcon icon={faPowerOff}/></CustomButton>
+            <button onClick={handleLogOff}><FontAwesomeIcon icon={faPowerOff}/></button>
         </div>
     )
 

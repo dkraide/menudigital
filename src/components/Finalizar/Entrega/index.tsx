@@ -8,9 +8,10 @@ import IEndereco from '@/interfaces/IEndereco';
 import { toast } from 'react-toastify';
 import CustomButton from '@/components/CustomButton';
 import { InputFormMask, InputGroup } from '@/components/CustomInput';
-import IConfiguracao from '@/interfaces/IConfiguracao';
+import IConfiguracao from '@/interfaces/IMerchantOpenDelivery';
 import { AddressSearch, IAddress } from '@/components/AddressSearch';
 import { fGetNumber, fGetOnlyNumber } from '@/utils/functions';
+import { IsOpenned } from '@/services/opennedService';
 
 type orderEntregaProps = {
     handleTaxa: (endereco?: IEndereco, taxa?: number) => void;
@@ -23,8 +24,14 @@ export default function Entrega({ handleTaxa, configuracao }: orderEntregaProps)
     const [endereco, setEndereco] = useState<IEndereco>({} as IEndereco);
     const [empresa, setEmpresa] = useState('');
     const [typeEntrega, setTypeEntrega] = useState<'' | 'ENTREGA' | 'RETIRA'>('');
+    const [openned, setOpenned] = useState(false);
     useEffect(() => {
         setEmpresa(sessionStorage.getItem('empresa') || '');
+        const loadOpenned = async () => {
+            var o = await IsOpenned();
+            setOpenned(o);
+        }
+        loadOpenned();
     }, []);
     function getTaxaEntrega() {
         const cep = fGetOnlyNumber(endereco.cep);
@@ -84,7 +91,7 @@ export default function Entrega({ handleTaxa, configuracao }: orderEntregaProps)
                 <CustomButton style={{ width: '40%' }} onClick={() => {
                     handleTaxa();
                 }} typeButton={'outline'}>Balcão</CustomButton>
-                <CustomButton disabled={!configuracao?.aberto || !configuracao?.entrega} style={{ width: '40%' }} onClick={() => {
+                <CustomButton disabled={!openned} style={{ width: '40%' }} onClick={() => {
                     setTypeEntrega('ENTREGA');
                 }} typeButton={'primary'}>Entregar</CustomButton>
 

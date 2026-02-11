@@ -30,6 +30,7 @@ export default function Produto() {
             });
     }, []);
 
+    console.log(produto);
 
     function addProd(operator: string) {
         if (operator === '-') {

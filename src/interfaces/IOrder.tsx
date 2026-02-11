@@ -51,7 +51,7 @@ export interface IOrderProduto{
 
 }
 export interface IOrderProdutoAdicional{
-  id: number;
+  id: string;
   nome: string;
   quantidade: number;
   valorUn: number;

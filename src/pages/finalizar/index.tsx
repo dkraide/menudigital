@@ -11,7 +11,7 @@ import { IOrder } from '@/interfaces/IOrder';
 import CarrinhoVazio from '@/components/Finalizar/CarrinhoVazio';
 import Entrega from '@/components/Finalizar/Entrega';
 import Pagamento from '@/components/Finalizar/Pagamento';
-import IConfiguracao from '@/interfaces/IConfiguracao';
+import IConfiguracao from '@/interfaces/IMerchantOpenDelivery';
 import { api } from '@/services/api';
 import { AxiosResponse } from 'axios';
 

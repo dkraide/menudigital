@@ -50,11 +50,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setUser(user);
     }
     async function signOff(){
-           await setCookie(undefined, '@menudigital.user', undefined, {
-            maxAge: 60 * 60 * 24 * 30, //expirar em 1 mes,
-            path: "/" //quais caminhos terao acesso aos cookies
-        });
-        setUser(undefined);
+        //    await setCookie(undefined, '@menudigital.user', undefined, {
+        //     maxAge: 60 * 60 * 24 * 30, //expirar em 1 mes,
+        //     path: "/" //quais caminhos terao acesso aos cookies
+        // });
+        // setUser(undefined);
     }
 
     return (

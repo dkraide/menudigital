@@ -1,0 +1,271 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: 100vh;
+    background: #f5f5f5;
+}
+
+.loading,
+.error {
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 18px;
+    color: #666;
+}
+
+.error {
+    color: #ef4444;
+    background: #fee;
+    border-radius: 8px;
+    margin: 20px;
+}
+
+// Status Badge - Animado e destacado
+.statusBadge {
+    background: var(--status-color);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: pulse 2s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent);
+        animation: shimmer 3s infinite;
+    }
+
+    .statusIcon {
+        font-size: 32px;
+        display: block;
+        margin-bottom: 8px;
+        animation: bounce 2s ease-in-out infinite;
+    }
+
+    .statusLabel {
+        font-size: 20px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        position: relative;
+        z-index: 1;
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    50% {
+        transform: scale(1.02);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+// Order Card
+.orderCard {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.orderHeader {
+    background: linear-gradient(135deg, #FF3F4B 0%, #d32f3a 100%);
+    color: white;
+    padding: 24px;
+
+    h2 {
+        margin: 0 0 8px 0;
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    .orderDate {
+        margin: 0;
+        opacity: 0.9;
+        font-size: 14px;
+    }
+}
+
+.section {
+    padding: 24px;
+    border-bottom: 1px solid #e5e5e5;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    h3 {
+        margin: 0 0 16px 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    p {
+        margin: 4px 0;
+        color: #666;
+        line-height: 1.5;
+    }
+}
+
+// Products
+.productItem {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    .productHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 8px;
+
+        .productName {
+            font-weight: 600;
+            color: #333;
+            flex: 1;
+        }
+
+        .productPrice {
+            font-weight: 700;
+            color: #FF3F4B;
+            margin-left: 12px;
+        }
+    }
+
+    .observation {
+        font-size: 14px;
+        color: #666;
+        font-style: italic;
+        margin: 8px 0 0 0;
+    }
+}
+
+.adicionais {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed #ddd;
+    font-size: 14px;
+
+    strong {
+        display: block;
+        margin-bottom: 8px;
+        color: #666;
+    }
+
+    .adicionalItem {
+        display: flex;
+        justify-content: space-between;
+        padding: 4px 0;
+        color: #666;
+
+        span:last-child {
+            color: #FF3F4B;
+            font-weight: 600;
+        }
+    }
+}
+
+// Summary
+.summaryLine {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    color: #666;
+
+    &.total {
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 2px solid #333;
+        font-size: 18px;
+        font-weight: 700;
+        color: #333;
+
+        span:last-child {
+            color: #FF3F4B;
+        }
+    }
+
+    .discount {
+        color: #10b981;
+    }
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .container {
+        padding: 12px;
+    }
+
+    .statusBadge {
+        .statusIcon {
+            font-size: 28px;
+        }
+
+        .statusLabel {
+            font-size: 18px;
+        }
+    }
+
+    .orderHeader {
+        padding: 20px;
+
+        h2 {
+            font-size: 20px;
+        }
+    }
+
+    .section {
+        padding: 20px;
+
+        h3 {
+            font-size: 16px;
+        }
+    }
+}
