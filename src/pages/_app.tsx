@@ -52,7 +52,7 @@ function EmpresaResolver({ setEmpresaValida }: { setEmpresaValida: (v: boolean) 
 
       const slug = parts[0];
       try {
-        const res = await api.get(`/empresa/slug/${slug}`);
+        const res = await api.get(`/menudigital/slug/${slug}`);
         setEmpresaId(res.data.id);
         setEmpresaValida(true);
       } catch {
