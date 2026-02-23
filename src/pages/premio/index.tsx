@@ -17,14 +17,12 @@ import IPremio from '@/interfaces/IPremio';
 
 export default function Premio() {
     const [premio, setPremio] = useState({} as IPremio);
-    const { getEmpresaId } = useContext(AuthContext);
     const [obs, setObs] = useState('');
     const [quantidade, setQuantidade] = useState(1);
-
+    const { empresaId } = useContext(AuthContext);
     const loadData = async () => {
         const params = new URLSearchParams(window.location.search);
-        const item = await getEmpresaId();
-        api.get(`/MenuDigital/premio?empresa=${item}&premioId=${params.get('premioId')}`)
+        api.get(`/MenuDigital/premio?empresa=${empresaId}&premioId=${params.get('premioId')}`)
             .then((r) => {
                 setPremio(r.data);
             }).catch((err) => {

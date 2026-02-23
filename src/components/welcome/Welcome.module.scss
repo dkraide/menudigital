@@ -1,0 +1,36 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    max-width: 400px;
+    margin-bottom: 2rem;
+  }
+}
+
+
+
+.contato {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  a {
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    background: black;
+    color: white;
+  }
+}

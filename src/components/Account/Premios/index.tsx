@@ -9,12 +9,11 @@ import DividerLine from '@/components/DividerLine';
 import Link from 'next/link';
 
 export default function Premios() {
-    const { user, getEmpresaId } = useContext(AuthContext);
+    const { user, empresaId } = useContext(AuthContext);
     const [premios, setPremios] = useState<IPremio[]>([])
 
 
     const loadData = async () => {
-        let empresaId = await getEmpresaId();
         await api.get(`/Premio/List?empresaId=${empresaId}`).then(({ data }) => {
             const premiosOrdenados = data.sort((a, b) => a.quantidadePontos - b.quantidadePontos);
             setPremios(premiosOrdenados);

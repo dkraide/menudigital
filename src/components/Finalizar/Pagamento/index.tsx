@@ -20,47 +20,46 @@ export default function Pagamento({ order }: pagamentoProps) {
     const [forma, setForma] = useState<'DINHEIRO' | 'CREDITO' | 'DEBITO' | ''>('');
     const [troco, setTroco] = useState('');
     const [loading, setLoading] = useState(false);
-    const {getEmpresaId} = useContext(AuthContext);
-
+    const { empresaId } = useContext(AuthContext);
 
     const handleSendPedido = async () => {
-        if(forma == ''){
+        if (forma == '') {
             toast.error(`Selecione uma forma de pagamento.`);
             return;
         }
         order.pagamento = forma;
-        if(order.pagamento == 'DINHEIRO' && troco.length > 0){
+        if (order.pagamento == 'DINHEIRO' && troco.length > 0) {
             var trocoNumber = fGetNumber(troco);
-            if(trocoNumber < order.valorTotal){
+            if (trocoNumber < order.valorTotal) {
                 toast.error(`Troco: ${troco} invalido. Valor do troco deve ser maior que o valor total do pedido. (Digite apenas o valor, sem cifrão ou letras.) `)
                 return;
             }
             order.troco = trocoNumber;
         }
-        
+
 
         setLoading(true);
         var pedido = createPedido(order);
-        pedido.empresaId = await getEmpresaId();
+        pedido.empresaId = empresaId;
         await api.post(`/PedidoOnline/CreateOrder`, pedido)
-        .then(({data}) => {
-            toast.success(`Pedido enviado com sucesso!`);
-            sessionStorage.setItem('order', '{}');
-            window.location.href = `/order?id=${data.id}&telefone=${data.telefone}`;
+            .then(({ data }) => {
+                toast.success(`Pedido enviado com sucesso!`);
+                sessionStorage.setItem('order', '{}');
+                window.location.href = `/order?id=${data.id}&telefone=${data.telefone}`;
 
-        }).catch((err: AxiosError) => {
-            toast.error(`Erro ao enviar pedido. Tente novamente mais tarde`);
-        })
+            }).catch((err: AxiosError) => {
+                toast.error(`Erro ao enviar pedido. Tente novamente mais tarde`);
+            })
 
         setLoading(false);
 
 
     }
 
-    if(loading){
-        return(
+    if (loading) {
+        return (
             <div className={styles.container}>
-                <Loading size={250}/>
+                <Loading size={250} />
             </div>
         )
     }
@@ -120,7 +119,7 @@ export default function Pagamento({ order }: pagamentoProps) {
                 {forma == 'DINHEIRO' &&
                     (
                         <div className={styles.dinheiro}>
-                            <InputGroup placeholder={'Ex: 100,00'} style={{backgroundColor: 'var(--gray-100)'}} value={troco || ''} onChange={(e) => {setTroco(e.currentTarget.value)}} title={'Informe o valor para troco, se necessario.'}/>
+                            <InputGroup placeholder={'Ex: 100,00'} style={{ backgroundColor: 'var(--gray-100)' }} value={troco || ''} onChange={(e) => { setTroco(e.currentTarget.value) }} title={'Informe o valor para troco, se necessario.'} />
                         </div>
                     )}
 

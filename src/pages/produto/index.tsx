@@ -1,7 +1,7 @@
 import Header from '@/components/Header';
 import styles from './styles.module.scss';
 import IClasseProduto from '@/interfaces/IClasseProduto';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { api } from '@/services/api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faMinus, faPlug, faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -12,17 +12,16 @@ import CustomCheckbox from '@/components/CustomCheckbox';
 import { toast } from 'react-toastify';
 import DividerLine from '@/components/DividerLine';
 import CustomButton from '@/components/CustomButton';
+import { AuthContext } from '@/contexts/AuthContexto';
 
 export default function Produto() {
     const [produto, setProduto] = useState({} as IClasseProduto);
-    const [empresaId, setEmpresa] = useState('');
     const [obs, setObs] = useState('');
     const [quantidade, setQuantidade] = useState(1);
+    const { empresaId } = useContext(AuthContext);
     useEffect(() => {
-        var item = sessionStorage.getItem('empresa') || '';
         const params = new URLSearchParams(window.location.search);
-        setEmpresa(item);
-        api.get(`/MenuDigital/produto?empresa=${item}&produtoId=${params.get('produtoId')}&tamanhoId=${params.get('tamanhoId')}`)
+        api.get(`/MenuDigital/produto?empresa=${empresaId}&produtoId=${params.get('produtoId')}&tamanhoId=${params.get('tamanhoId')}`)
             .then((r) => {
                 setProduto(r.data);
             }).catch((err) => {

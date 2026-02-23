@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import styles from './styles.module.scss';
 import { api } from '@/services/api';
 import IEmpresa from '@/interfaces/IEmpresa';
 import IMerchantOpenDelivery from '@/interfaces/IMerchantOpenDelivery';
 import { IsOpenned } from '@/services/opennedService';
+import { AuthContext } from '@/contexts/AuthContexto';
 
 
 type headerProps = {
@@ -15,10 +16,13 @@ export default function Header({ emp }: headerProps) {
     const [config, setConfig] = useState<IMerchantOpenDelivery>();
     const [loading, setLoading] = useState(true);
     const [openned, setOpenned] = useState(false);
+    const {empresaId} = useContext(AuthContext);
 
     useEffect(() => {
-        var empresa = emp || sessionStorage.getItem('empresa') || '';
-        getEmpresa(empresa);
+        if(!empresaId){
+            return;}
+
+        getEmpresa(empresaId.toString());
     }, []);
     async function getEmpresa(empr: string) {
         await api.get(`/opendelivery/merchant?empresaId=${empr}`)

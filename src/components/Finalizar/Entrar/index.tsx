@@ -21,7 +21,7 @@ export default function Entrar({ handleUser }: userProps) {
     const { user } = useContext(AuthContext)
     const [codeSent, setCodeSent] = useState(false);
     const [code, setCode] = useState('');
-    const { getEmpresaId } = useContext(AuthContext);
+    const { empresaId } = useContext(AuthContext);
     const [newUser, setNewUser] = useState(false);
 
     useEffect(() => {
@@ -36,7 +36,6 @@ export default function Entrar({ handleUser }: userProps) {
             toast.error(`Informe um número de celular válido`);
             return;
         }
-        const empresaId = await getEmpresaId();
         await api.post(`/menudigital/sendsms`, {
             empresaId,
             telefone: phoneNumber,
@@ -53,7 +52,6 @@ export default function Entrar({ handleUser }: userProps) {
         });
     };
     const handleCadastrar = async () => {
-        const empresaId = await getEmpresaId();
         await api.post(`/MenuDigital/Clientes/${empresaId}`, {
             empresaId: empresaId,
             nome: name,
@@ -69,7 +67,6 @@ export default function Entrar({ handleUser }: userProps) {
     }
 
     const handleVerificarCodigo = async () => {
-        const empresaId = await getEmpresaId();
         const phoneNumber = fGetOnlyNumber(phone);
         if (!phoneNumber || phoneNumber.length != 11) {
             toast.error(`Informe um número de celular válido`);

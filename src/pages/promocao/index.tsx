@@ -16,12 +16,11 @@ import { AuthContext } from '@/contexts/AuthContexto';
 export default function Promocao() {
     const [promocao, setPromocao] = useState<IPromocao>({} as IPromocao);
     const [isLoading, setLoading] = useState(true);
-    const { getEmpresaId } = useContext(AuthContext);
+    const { empresaId } = useContext(AuthContext);
 
     const loadData = async () => {
         const params = new URLSearchParams(window.location.search);
-        const item = await getEmpresaId();
-        api.get(`/MenuDigital/Promocao?empresa=${item}&id=${params.get('promocaoId')}`)
+        api.get(`/MenuDigital/Promocao?empresa=${empresaId}&id=${params.get('promocaoId')}`)
             .then(({ data }: AxiosResponse<IPromocao>) => {
                 data.produtos?.map((c) => c.quantidade = 0);
                 setPromocao(data);

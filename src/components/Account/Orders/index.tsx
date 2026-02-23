@@ -15,15 +15,14 @@ type props = {
 export default function Orders({ user }: props) {
 
     const [orders, setOrders] = useState<IPedidoOnline[]>([]);
-    const {getEmpresaId} = useContext(AuthContext);
+    const { empresaId } = useContext(AuthContext);
 
     useEffect(() => {
-        if(!user){
+        if (!user) {
             return;
         }
         const loadOrders = async () => {
-            const empresa = await getEmpresaId();
-            await api.get(`/PedidoOnline/Pedidos?empresa=${empresa}&telefone=${user.telefone}`)
+            await api.get(`/PedidoOnline/Pedidos?empresa=${empresaId}&telefone=${user.telefone}`)
                 .then(({ data }) => {
                     setOrders(data);
                 }).catch((err) => {

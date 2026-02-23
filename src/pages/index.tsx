@@ -19,19 +19,12 @@ export default function Home() {
   const [promocoes, setPromocoes] = useState<IPromocao[]>([]);
   const [classes, setClasses] = useState<IClasse[]>([]);
   const [search, setSearch] = useState('');
-  const {setEmpresaId} = useContext(AuthContext);
+  const {setEmpresaId, empresaId} = useContext(AuthContext);
   useEffect(() => {
-
-    const params = new URLSearchParams(window.location.search);
-    var item = params.get('empresa') || '';
-    if (item.length > 0) {
-      setEmpresaId(Number(item));
-      sessionStorage.setItem('empresa', item);
-      window.location.href = '/';
-    } else {
-      item = sessionStorage.getItem('empresa') || '';
+    if(!empresaId){
+      return;
     }
-    loadDatas(item);
+    loadDatas(empresaId.toString());
   }, []);
   async function loadDatas(empresa: string) {
     await setTimeout(() => { }, 500);

@@ -11,15 +11,14 @@ import IMerchantOpenDelivery from '@/interfaces/IMerchantOpenDelivery';
 
 export default function Loja() {
     const [config, setConfig] = useState<IMerchantOpenDelivery>();
-    const {getEmpresaId} = useContext(AuthContext)
+    const {empresaId} = useContext(AuthContext)
 
     useEffect(() => {
         loadConfig();
     }, [])
     async function loadConfig() {
-        let empr = await getEmpresaId();
         api
-            .get(`/opendelivery/merchant?empresaId=${empr}`)
+            .get(`/opendelivery/merchant?empresaId=${empresaId}`)
             .then((r) => {
                 setConfig(r.data);
             }).catch((r) => {
