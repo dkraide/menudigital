@@ -145,7 +145,7 @@ export default function OrderTotal({cliente, taxa, isEntrega, endereco }: orderT
            poa.quantidade = adc.quantidade;
            poa.valorUnitario = adc.valorUn;
            poa.valorTotal = adc.valorTotal;
-           poa.materiaPrimaId = adc.id;
+           poa.produtoGrupoItemId = adc.id;
            x.adicionais.push(poa);
        });
     }
