@@ -53,3 +53,4 @@ export default interface IMerchantOpenDelivery {
   urlKeeta?: string
 
 }
+

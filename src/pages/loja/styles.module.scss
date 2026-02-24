@@ -101,33 +101,40 @@
     }
 }
 
-.table {
+.weekContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     width: 100%;
-    max-width: 600px;
-    min-width: 390px;
-    border-collapse: collapse;
-    td{
-        padding: 5px 0px;
-        text-align: center;
-    }
-    th{
-        text-align: center !important;
-    }
+}
 
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
-        /* Cinza claro */
-    }
+.dayRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
 
-    tr:nth-child(odd) {
-        background-color: #ffffff;
-        /* Branco */
-    }
+.dayName {
+    font-weight: 600;
+    min-width: 150px;
+}
 
-    th,
-    table td {
-        padding: 8px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-    }
+.dayHours {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.timeBadge {
+    background: #f3f3f3;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.closed {
+    color: #c0392b;
+    font-weight: 500;
 }

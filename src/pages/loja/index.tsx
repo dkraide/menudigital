@@ -8,10 +8,12 @@ import { fGetOnlyNumber } from '@/utils/functions';
 import { faFacebook, faInstagram, faWhatsapp } from '@fortawesome/free-brands-svg-icons';
 import { AuthContext } from '@/contexts/AuthContexto';
 import IMerchantOpenDelivery from '@/interfaces/IMerchantOpenDelivery';
+import { ITimePeriods, IWeekHour } from '@/interfaces/IWeekHour';
 
 export default function Loja() {
     const [config, setConfig] = useState<IMerchantOpenDelivery>();
-    const {empresaId} = useContext(AuthContext)
+    const [hours, setHours] = useState<IWeekHour[]>([]);
+    const { empresaId } = useContext(AuthContext)
 
     useEffect(() => {
         loadConfig();
@@ -23,6 +25,12 @@ export default function Loja() {
                 setConfig(r.data);
             }).catch((r) => {
             });
+        api.get(`/menudigital/horarios/${empresaId}`).then((r) => {
+            console.log(r.data);
+            setHours(r.data);
+        }).catch((r) => {
+        });
+
     }
 
 
@@ -39,6 +47,7 @@ export default function Loja() {
         )
 
     }
+
 
 
     return (
@@ -68,39 +77,103 @@ export default function Loja() {
                     </div>
                 </div>
             )}
-            {/* {config && (
-                <div style={{ padding: '0px 10px' }}>
-                    <div className={styles.card}>
-                        <div className={styles.cardTitle}>
-                            <FontAwesomeIcon icon={faShop} />
-                            <span>Horarios de funcionamento</span>
-                        </div>
-                        <div className={styles.cardBody}>
 
-                            <table className={styles.table}>
-                                <thead>
-                                    <tr>
-                                        <th>Dia</th>
-                                        <th>Abertura</th>
-                                        <th>Fechamento</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {config.horarios.map((horario) => (
-                                        <tr>
-                                            <td>{horario.dia}</td>
-                                            <td>{horario.abertura}</td>
-                                            <td>{horario.fechamento}</td>
-                                        </tr>
-                                    ))}
+            <HoursComponent hours={hours} />
 
-                                </tbody>
-                            </table>
-                        </div>
+        </div>
+    )
+}
+
+const HoursComponent = ({ hours }: { hours: IWeekHour[] }) => {
+    const translateDay = (day: string) => {
+        const map: Record<string, string> = {
+            MONDAY: "Segunda-feira",
+            TUESDAY: "Terça-feira",
+            WEDNESDAY: "Quarta-feira",
+            THURSDAY: "Quinta-feira",
+            FRIDAY: "Sexta-feira",
+            SATURDAY: "Sábado",
+            SUNDAY: "Domingo",
+        };
+
+        return map[day] || day;
+    };
+    const convertToBrazilTime = (time: string) => {
+        const date = new Date(`1970-01-01T${time}`); // Z = UTC
+
+        return date.toLocaleTimeString("pt-BR", {
+            hour: "2-digit",
+            minute: "2-digit",
+            timeZone: "America/Sao_Paulo",
+        });
+    };
+    const weekDays = [
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY",
+    ];
+    const organizeHoursByDay = () => {
+        const result: Record<string, ITimePeriods[]> = {};
+
+        weekDays.forEach(day => {
+            result[day] = [];
+        });
+
+        hours.forEach(weekHour => {
+            weekHour.dayOfWeek.forEach(day => {
+                if (!result[day]) result[day] = [];
+                result[day].push(weekHour.timePeriods);
+            });
+        });
+
+        return result;
+    };
+
+    const hoursByDay = organizeHoursByDay();
+
+    if (!hours || hours.length === 0) return <></>;
+
+    return (
+        <div style={{ padding: '0px 10px' }}>
+            <div className={styles.card}>
+                <div className={styles.cardTitle}>
+                    <FontAwesomeIcon icon={faShop} />
+                    <span>Horários de funcionamento</span>
+                </div>
+
+                <div className={styles.cardBody}>
+                    <div className={styles.weekContainer}>
+                        {weekDays.map((day) => {
+                            const periods = hoursByDay[day];
+
+                            return (
+                                <div key={day} className={styles.dayRow}>
+                                    <div className={styles.dayName}>
+                                        {translateDay(day)}
+                                    </div>
+
+                                    <div className={styles.dayHours}>
+                                        {periods.length === 0 ? (
+                                            <span className={styles.closed}>Fechado</span>
+                                        ) : (
+                                            periods.map((period, index) => (
+                                                <span key={index} className={styles.timeBadge}>
+                                                    {convertToBrazilTime(period.startTime)} -{" "}
+                                                    {convertToBrazilTime(period.endTime)}
+                                                </span>
+                                            ))
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
-            )} */}
-
+            </div>
         </div>
     )
 }
