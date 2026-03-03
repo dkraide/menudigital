@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './styles.module.scss';
 import { faRefresh, faSearch } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { api } from '@/services/api';
 import { AxiosResponse } from 'axios';
 import IEndereco from '@/interfaces/IEndereco';
@@ -12,6 +12,7 @@ import IConfiguracao from '@/interfaces/IMerchantOpenDelivery';
 import { AddressSearch, IAddress } from '@/components/AddressSearch';
 import { fGetNumber, fGetOnlyNumber } from '@/utils/functions';
 import { IsOpenned } from '@/services/opennedService';
+import { AuthContext } from '@/contexts/AuthContexto';
 
 type orderEntregaProps = {
     handleTaxa: (endereco?: IEndereco, taxa?: number) => void;
@@ -22,14 +23,14 @@ export default function Entrega({ handleTaxa, configuracao }: orderEntregaProps)
     const [isReadOnly, setIsReadOnly] = useState(false);
     const nroRef = useRef<HTMLInputElement>(null);
     const [endereco, setEndereco] = useState<IEndereco>({} as IEndereco);
-    const [empresa, setEmpresa] = useState('');
     const [typeEntrega, setTypeEntrega] = useState<'' | 'ENTREGA' | 'RETIRA'>('');
     const [openned, setOpenned] = useState(false);
+    const {empresaId} = useContext(AuthContext);
     useEffect(() => {
-        setEmpresa(sessionStorage.getItem('empresa') || '');
         const loadOpenned = async () => {
             var o = await IsOpenned();
             setOpenned(o);
+            console.log(o);
         }
         loadOpenned();
     }, []);
@@ -40,7 +41,7 @@ export default function Entrega({ handleTaxa, configuracao }: orderEntregaProps)
             return;
 
         }
-        api.get(`/MenuDigital/CalculaFrete?empresa=${empresa}&latitude=${endereco.latitude}&longitude=${endereco.longitude}`)
+        api.get(`/MenuDigital/CalculaFrete?empresa=${empresaId}&latitude=${endereco.latitude}&longitude=${endereco.longitude}`)
             .then((r) => {
                 setIsReadOnly(true);
                 if (isNaN(r.data) || r.data < 0) {

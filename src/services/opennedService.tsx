@@ -4,10 +4,10 @@ const CACHE_KEY = 'menu_openned';
 const TTL = 30 * 1000; // 1 minuto
 
 export const IsOpenned = async (emp?: string): Promise<boolean> => {
-    const empresa = emp || sessionStorage.getItem('empresa') || '';
-    if (!empresa) return false;
+    
 
     const cache = sessionStorage.getItem(CACHE_KEY);
+    console.log('Cache:', cache);
 
     if (cache) {
         const { value, time } = JSON.parse(cache);
@@ -16,6 +16,9 @@ export const IsOpenned = async (emp?: string): Promise<boolean> => {
             return value; // cache válido
         }
     }
+    const empresa = emp || sessionStorage.getItem('@menudigital.empresaId') || '';
+    console.log('Verificando se está aberto para a empresa:', empresa);
+    if (!empresa) return false;
 
     try {
         const { data } = await api.get<boolean>(
