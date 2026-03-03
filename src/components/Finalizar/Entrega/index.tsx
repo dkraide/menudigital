@@ -24,16 +24,7 @@ export default function Entrega({ handleTaxa, configuracao }: orderEntregaProps)
     const nroRef = useRef<HTMLInputElement>(null);
     const [endereco, setEndereco] = useState<IEndereco>({} as IEndereco);
     const [typeEntrega, setTypeEntrega] = useState<'' | 'ENTREGA' | 'RETIRA'>('');
-    const [openned, setOpenned] = useState(false);
     const {empresaId} = useContext(AuthContext);
-    useEffect(() => {
-        const loadOpenned = async () => {
-            var o = await IsOpenned();
-            setOpenned(o);
-            console.log(o);
-        }
-        loadOpenned();
-    }, []);
     function getTaxaEntrega() {
         const cep = fGetOnlyNumber(endereco.cep);
         if (!cep && cep.length != 8) {
@@ -92,7 +83,7 @@ export default function Entrega({ handleTaxa, configuracao }: orderEntregaProps)
                 <CustomButton style={{ width: '40%' }} onClick={() => {
                     handleTaxa();
                 }} typeButton={'outline'}>Balcão</CustomButton>
-                <CustomButton disabled={!openned} style={{ width: '40%' }} onClick={() => {
+                <CustomButton  style={{ width: '40%' }} onClick={() => {
                     setTypeEntrega('ENTREGA');
                 }} typeButton={'primary'}>Entregar</CustomButton>
 
