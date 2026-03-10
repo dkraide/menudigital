@@ -65,7 +65,8 @@ export default function Finalizar() {
             order.bairro = address.bairro;
             order.cep = address.cep;
             order.cidade = address.cidade?.nome;
-            order.complemento = address.compl;
+            console.log(address.complemento);
+            order.complemento = address.complemento;
             order.logradouro = address.logradouro;
             order.numero = address.numero;
             order.valorFrete = taxa || 0;
